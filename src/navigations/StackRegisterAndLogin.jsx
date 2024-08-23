@@ -5,12 +5,13 @@ import Login from '../screens/login/Login';
 import Register from '../screens/login/Register';
 import VerifyCode from '../screens/login/SubSteps/VerifyCode';
 import CreatePassword from '../screens/login/SubSteps/CreatePassword';
+import StackHome from './StackHome';
 
 const Stack = createStackNavigator();
 
 export default function StackRegisterAndLogin() {
     return (
-        <Stack.Navigator screenOptions={{
+        <Stack.Navigator initialRouteName="HomeLogin" screenOptions={{
             headerShown: false, // Esconde o cabeçalho em todas as telas
           }}>
             <Stack.Screen name="HomeLogin" component={HomeLogin} />
@@ -18,6 +19,7 @@ export default function StackRegisterAndLogin() {
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="VerifyCode" component={VerifyCode} />
             <Stack.Screen name="CreatePassword" component={CreatePassword} />
+            <Stack.Screen name="StackHome" component={StackHome} />
         </Stack.Navigator>
     );
 }

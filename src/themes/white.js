@@ -16,7 +16,7 @@ const whiteTheme = {
         "onError": "rgb(255, 255, 255)",
         "errorContainer": "rgb(255, 218, 214)",
         "onErrorContainer": "rgb(65, 0, 2)",
-        "background": "rgb(255, 251, 255)",
+        "background": "#f7f8f9",
         "onBackground": "rgb(29, 27, 30)",
         "surface": "rgb(255, 251, 255)",
         "onSurface": "rgb(29, 27, 30)",
@@ -31,7 +31,7 @@ const whiteTheme = {
         "inversePrimary": "rgb(220, 184, 255)",
         "elevation": {
             "level0": "transparent",
-            "level1": "rgb(248, 242, 251)",
+            "level1": "#1e232c",
             "level2": "rgb(244, 236, 248)",
             "level3": "rgb(240, 231, 246)",
             "level4": "rgb(239, 229, 245)",

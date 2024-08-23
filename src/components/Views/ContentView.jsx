@@ -9,7 +9,7 @@ export default function ContentView({ children, backgound = 'transparent' }) {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={styleContainer}>
             {children}
         </View>
     )

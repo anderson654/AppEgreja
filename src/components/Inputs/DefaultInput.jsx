@@ -23,6 +23,7 @@ export default function DefaultInput({ mode = 'flat', label = 'E-mail', onChange
             mode={mode}
             style={{ marginBottom: 20 }}
             autoCorrect={autoCorrect}
+            right={<TextInput.Icon onPress={() => {}} forceTextInputFocus={false} icon={'shopping-search'} />}
         />
     );
 }
