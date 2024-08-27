@@ -12,12 +12,12 @@ import MenuSelectTypeService from "../../../../components/Menus/MenuSelectTypeSe
 import MenuSelectService from "../../../../components/Menus/MenuSelectService";
 import { Avatar } from "react-native-paper";
 
-export default function Inicial() {
+export default function Promocoes() {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const routes = useNavigationState(state => state.routes);
     const [layout, setLayout] = useState({ width: 0, height: 0 });
-    console.log(navigation.getParent().getParent().getState());
+    // console.log(navigation.getParent().getParent().getState());
 
     const handleLayoutSearch = (event) => {
         const { width, height } = event.nativeEvent.layout;
@@ -27,15 +27,15 @@ export default function Inicial() {
 
     return (
         <>
-            <View style={styles.containerSearch} onLayout={handleLayoutSearch}>
+            <View style={styles.containerSearch}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <ButtonIconSurface onPress={() => dispatch(setMenuProfile(true))} />
+                    <ButtonIconSurface onPress={() => dispatch(setMenuProfile(true))}/>
                     <DefaultInput styles={styles.customStyleInputSearch} mode="outlined" label="Pesquisar um item ou comercio." />
                 </View>
                 <Space20 />
             </View>
             <ScrollView style={styles.container}>
-                <View style={styles.contentContainer}>
+                {/* <View style={styles.contentContainer}>
                     <View style={styles.containerPadding}>
                         <View style={styles.containerTitle}>
                             <Title>Olá, <Title fontFamily={'Poppins_700Bold'}>Gabriel{'\n'}</Title>Vai do que hoje?</Title>
@@ -47,7 +47,7 @@ export default function Inicial() {
                     <MenuSelectTypeService />
                     <MenuSelectService />
                     <Space20 />
-                </View>
+                </View> */}
                 <View>
                     {/* body */}
                 </View>
@@ -59,6 +59,7 @@ export default function Inicial() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        // backgroundColor:"red"
         // backgroundColor: "#fff"
     },
     contentContainer: {

@@ -1,20 +1,28 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { Icon, Surface } from "react-native-paper";
 
-export default function ButtonIconSurface() {
+export default function ButtonIconSurface({ onPress = () => { }, icon="menu-open", elevation = 1, styles = {} }) {
+
+    const styleSurface = {
+        ...internalStyles.surface,
+        ...styles
+    }
+
     return (
-        <Surface style={styles.surface} elevation={1}>
-            <Icon
-                source="menu-open"
-                color={'#000'}
-                size={25}
-            />
-        </Surface>
+        <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
+            <Surface style={styleSurface} elevation={elevation}>
+                <Icon
+                    source={icon}
+                    color={'#000'}
+                    size={25}
+                />
+            </Surface>
+        </TouchableOpacity>
     )
 }
 
-const styles = StyleSheet.create({
+const internalStyles = StyleSheet.create({
     surface: {
         height: 40,
         width: 40,

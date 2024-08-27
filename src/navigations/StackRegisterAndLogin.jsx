@@ -11,7 +11,7 @@ const Stack = createStackNavigator();
 
 export default function StackRegisterAndLogin() {
     return (
-        <Stack.Navigator initialRouteName="HomeLogin" screenOptions={{
+        <Stack.Navigator initialRouteName="StackHome" screenOptions={{
             headerShown: false, // Esconde o cabeçalho em todas as telas
           }}>
             <Stack.Screen name="HomeLogin" component={HomeLogin} />
