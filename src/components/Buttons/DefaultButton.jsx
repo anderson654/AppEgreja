@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { Button, useTheme, Surface } from 'react-native-paper';
 
-export default function DefaultButton({ mb = false, mode = 'contained', title = 'Buttom', shadow = 1, onPress = () => { } }) {
+export default function DefaultButton({ mb = false, mode = 'contained', title = 'Buttom', shadow = 1, loading, disabled, onPress = () => { } }) {
 
     const theme = useTheme();
 
@@ -17,10 +17,9 @@ export default function DefaultButton({ mb = false, mode = 'contained', title = 
         marginBottom: mb ? 20 : 0,
     }
 
-
     return (
         <Surface style={surfaceStyle} elevation={shadow}>
-            <Button style={styleContainer} contentStyle={styles.contentContainer} icon="" mode={mode} onPress={onPress} labelStyle={styles.fontStyle}>
+            <Button style={styleContainer} contentStyle={styles.contentContainer} icon="" mode={mode} onPress={onPress} labelStyle={styles.fontStyle} loading={loading} disabled={disabled}>
                 {title || ''}
             </Button>
         </Surface>
@@ -39,5 +38,8 @@ const styles = StyleSheet.create({
     },
     surfaceStyle: {
         borderRadius: 8,
+    },
+    disabledBtn: {
+        backgroundColor: "#fff"
     }
 });

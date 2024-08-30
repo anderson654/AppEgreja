@@ -8,8 +8,6 @@ const menuHomeProfile = createSlice({
     },
     reducers: {
         setMenuProfile: (state, action) => {
-            console.log(action.payload);
-            
             state.menuProfileIsOpen = action.payload;
         },
     },

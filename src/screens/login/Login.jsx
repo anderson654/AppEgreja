@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from 'react-redux';
 import { StyleSheet, View } from "react-native";
 import DefaultView from "../../components/Views/DefaultView";
 import ContentView from "../../components/Views/ContentView";
 import { Title } from "../../components/Typograph/Typographs";
-import DefaultInput from "../../components/Inputs/DefaultInput";
 import KeyBoardView from "../../components/Views/KeyBoardView";
 import useKeyboardStatus from "../../hooks/UseKeyboardStatus";
 import InputPassword from "../../components/Inputs/InputPassword";
@@ -12,18 +12,44 @@ import DefaultButton from "../../components/Buttons/DefaultButton";
 import TextAndLines from "../../components/Typograph/TextAndLines";
 import ArrowBack from "../../components/Buttons/ArrowBack";
 import BtnSocialMedia from "../../components/Buttons/BtnSocialMedia";
-import { Text } from "react-native-paper";
+import { HelperText, Text } from "react-native-paper";
 import { useNavigation } from '@react-navigation/native';
 import { Space20 } from "../../components/SpacesLine/Spaces";
+import InputEmail from "../../components/Inputs/InputEmail";
+import validateLoginYup from "../../validations/yup/loginValidation";
+import { loginEmail, getUser } from "../../apis/EgrejaApi/egreja";
+import { setUser } from "../../context/reducers/user";
 
 export default function Login() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [validate, setValidate] = useState({});
 
     const isKeyboardVisible = useKeyboardStatus();
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
-    function statusIcon(status) {
-        console.log("@ahhaha", status);
+    async function handlerLogin() {
+
+        const errors = await hasErrors();
+        if (errors) {
+            return;
+        }
+        await loginEmail(email, password);
+        const response = await getUser();
+        dispatch(setUser(response.data));
+        navigation.navigate("StackHome");
     }
+
+    const hasErrors = async () => {
+        const validate = await validateLoginYup({
+            email,
+            password
+        });
+        setValidate(validate);
+
+        return validate !== null;
+    };
 
     return (
         <DefaultView spaceTopBar={true} background="#fff">
@@ -33,12 +59,19 @@ export default function Login() {
                     <Space20 />
                     <Title>Bem vindo de volta! Que bom ver você aqui de novo!</Title>
                     <Space20 />
-                    <DefaultInput label="E-mail" onChangeText={(text) => statusIcon(text)} />
-                    <InputPassword label="Senha" onChangeText={(text) => statusIcon(text)} />
+                    <InputEmail label="E-mail" onChangeText={(text) => setEmail(text)} icon="email" error={!!validate?.email} />
+                    <HelperText type="error" visible={!!validate?.email}>
+                        {validate?.email}
+                    </HelperText>
+                    <Space20 />
+                    <InputPassword label="Senha" onChangeText={(text) => setPassword(text)} error={!!validate?.password} />
+                    <HelperText type="error" visible={!!validate?.password}>
+                        {validate?.password}
+                    </HelperText>
                     <View style={styles.containerLinkPassword}>
                         <Link color="#757575">Esqueceu a senha?</Link>
                     </View>
-                    <DefaultButton mb={true} title="Login" onPress={() => { }} />
+                    <DefaultButton mb={true} title="Login" onPress={() => handlerLogin()} />
                     <Space20 />
                     <TextAndLines />
                     <Space20 />
@@ -49,7 +82,7 @@ export default function Login() {
             </ContentView>
             {!isKeyboardVisible &&
                 <View style={styles.footer}>
-                    <Text variant="bodyLarge" style={{fontFamily:"Poppins_600SemiBold"}}>
+                    <Text variant="bodyLarge" style={{ fontFamily: "Poppins_600SemiBold" }}>
                         Ainda não tem conta?
                         <Link fontFamily="Poppins_600SemiBold"> Registre-se agora</Link>
                     </Text>

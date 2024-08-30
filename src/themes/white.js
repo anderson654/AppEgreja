@@ -38,7 +38,7 @@ const whiteTheme = {
             "level5": "rgb(236, 226, 243)"
         },
         "surfaceDisabled": "rgba(29, 27, 30, 0.12)",
-        "onSurfaceDisabled": "rgba(29, 27, 30, 0.38)",
+        "onSurfaceDisabled": "#fff",
         "backdrop": "rgba(51, 47, 55, 0.4)"
     }
 }

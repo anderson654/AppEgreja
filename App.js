@@ -1,5 +1,6 @@
 // Não importe react-native-gesture-handler na web
 // import './gesture-handler';
+import './src/apis/axiosInstances/axiosConfig';
 import { useCallback, useEffect, useState } from 'react';
 import { useMaterial3Theme } from '@pchmn/expo-material3-theme';
 import { NativeBaseProvider } from 'native-base';
@@ -10,6 +11,7 @@ import { Provider } from 'react-redux';
 import Index from './src/screens/Index';
 import { defaultWhithTheme, defaultBlackTheme } from './src/themes/themes';
 import * as SplashScreen from 'expo-splash-screen';
+
 
 import {
   MD3LightTheme as DefaultTheme,

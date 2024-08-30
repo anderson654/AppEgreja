@@ -4,7 +4,7 @@ import { formatWithMask, Masks } from 'react-native-mask-input';
 import { filterMaskText } from "../../utils/filterMaskedValue";
 import { maskPassword } from "../../utils/customMasks";
 
-export default function InputPassword({ mode = 'flat', label = "none", onChangeText }) {
+export default function InputPassword({ mode = 'flat', label = "none", onChangeText, error }) {
 
     const [text, setText] = React.useState("");
     const [textObfuscate, setTextObfuscated] = React.useState("");
@@ -28,7 +28,7 @@ export default function InputPassword({ mode = 'flat', label = "none", onChangeT
         if (typeof onChangeText === 'function') {
             onChangeText(unmasked);
         }
-        
+
         // console.log('Masked:', masked);         // Ex: "1234 5678 9012 3456"
         // console.log('Unmasked:', unmasked);     // Ex: "1234567890123456"
         // console.log('Obfuscated:', obfuscated); // Ex: "---- ---- ---- 3456"
@@ -46,8 +46,8 @@ export default function InputPassword({ mode = 'flat', label = "none", onChangeT
             value={inputIsVisible ? text : textObfuscate}
             onChangeText={text => handleChange(text)}
             mode={mode}
-            style={{ marginBottom: 20 }}
             right={<TextInput.Icon onPress={handlerChangeIcon} forceTextInputFocus={false} icon={iconName} />}
+            error={error}
         />
     );
 }

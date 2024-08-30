@@ -1,7 +1,7 @@
 import React from "react";
 import { TextInput } from "react-native-paper";
 
-export default function InputEmail({ mode = 'flat', onChangeText }) {
+export default function InputEmail({ mode = 'flat', onChangeText, error }) {
 
     const [text, setText] = React.useState("");
 
@@ -21,8 +21,9 @@ export default function InputEmail({ mode = 'flat', onChangeText }) {
             value={text}
             onChangeText={text => handlerText(text)}
             mode={mode}
-            style={{ marginBottom: 20 }}
             autoCorrect={false}
+            right={<TextInput.Icon onPress={() => { }} forceTextInputFocus={false} icon={'email'} />}
+            error={error}
         />
     );
 }

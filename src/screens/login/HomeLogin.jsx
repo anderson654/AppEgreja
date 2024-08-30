@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector } from 'react-redux';
 import { StyleSheet, View } from "react-native";
 import DefaultView from "../../components/Views/DefaultView";
 import DefaultButton from "../../components/Buttons/DefaultButton";
@@ -8,6 +9,13 @@ import Link from "../../components/Typograph/Link";
 export default function HomeLogin() {
 
     const navigation = useNavigation();
+    const contextUser = useSelector(state => state.user);
+
+    useEffect(() => {
+        if (contextUser.user) {
+            navigation.navigate('StackHome');
+        }
+    }, [contextUser.user]);
 
     return (
         <DefaultView spaceTopBar={true} background="#fff">
