@@ -26,9 +26,9 @@ const whiteTheme = {
         "outlineVariant": "rgb(204, 196, 206)",
         "shadow": "rgb(0, 0, 0)",
         "scrim": "rgb(0, 0, 0)",
-        "inverseSurface": "rgb(50, 47, 51)",
-        "inverseOnSurface": "rgb(245, 239, 244)",
-        "inversePrimary": "rgb(220, 184, 255)",
+        "inverseSurface": "#fff",
+        "inverseOnSurface": "#000",
+        "inversePrimary": "#000",
         "elevation": {
             "level0": "transparent",
             "level1": "#1e232c",

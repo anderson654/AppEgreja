@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from 'react-redux';
+import { setText, setStatus, setType } from "../../context/reducers/alertSnackBar";
 import { StyleSheet, View } from "react-native";
 import DefaultView from "../../components/Views/DefaultView";
 import ContentView from "../../components/Views/ContentView";
@@ -24,21 +25,32 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [validate, setValidate] = useState({});
+    const [loading, setLoading] = useState(false);
 
     const isKeyboardVisible = useKeyboardStatus();
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
     async function handlerLogin() {
-
-        const errors = await hasErrors();
-        if (errors) {
-            return;
+        setLoading(true);
+        try {
+            const errors = await hasErrors();
+            if (errors) {
+                return;
+            }
+            await loginEmail(email, password);
+            const response = await getUser();
+            dispatch(setUser(response.data));
+            navigation.navigate("StackHome");
+        } catch (error) {
+            if (error?.status == '401') {
+                dispatch(setText('Email ou senha inválidos'));
+                dispatch(setStatus(true));
+                dispatch(setType('error'));
+            }
+        } finally {
+            setLoading(false);
         }
-        await loginEmail(email, password);
-        const response = await getUser();
-        dispatch(setUser(response.data));
-        navigation.navigate("StackHome");
     }
 
     const hasErrors = async () => {
@@ -71,7 +83,7 @@ export default function Login() {
                     <View style={styles.containerLinkPassword}>
                         <Link color="#757575">Esqueceu a senha?</Link>
                     </View>
-                    <DefaultButton mb={true} title="Login" onPress={() => handlerLogin()} />
+                    <DefaultButton mb={true} title="Login" onPress={() => handlerLogin()} loading={loading} />
                     <Space20 />
                     <TextAndLines />
                     <Space20 />

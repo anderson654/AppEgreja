@@ -17,12 +17,12 @@ export default function Inicial() {
     const dispatch = useDispatch();
     const routes = useNavigationState(state => state.routes);
     const [layout, setLayout] = useState({ width: 0, height: 0 });
-    console.log(navigation.getParent().getParent().getState());
+    // console.log(navigation.getParent().getParent().getState());
 
     const handleLayoutSearch = (event) => {
         const { width, height } = event.nativeEvent.layout;
         setLayout({ width, height });
-        console.log(`Width: ${width}, Height: ${height}`);
+        // console.log(`Width: ${width}, Height: ${height}`);
     }
 
     return (

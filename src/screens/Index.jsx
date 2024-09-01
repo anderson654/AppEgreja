@@ -5,6 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import StackRegisterAndLogin from '../navigations/StackRegisterAndLogin';
 import { getUser } from '../apis/EgrejaApi/egreja';
 import { setUser } from '../context/reducers/user';
+import SnackbarPaper from '../components/Alerts/SnackbarPaper';
 
 export default function Index() {
 
@@ -28,6 +29,7 @@ export default function Index() {
         <View style={styles.container}>
             <StackRegisterAndLogin />
             <StatusBar style="auto" />
+            <SnackbarPaper />
         </View>
     );
 }

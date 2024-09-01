@@ -22,7 +22,7 @@ export default function Promocoes() {
     const handleLayoutSearch = (event) => {
         const { width, height } = event.nativeEvent.layout;
         setLayout({ width, height });
-        console.log(`Width: ${width}, Height: ${height}`);
+        // console.log(`Width: ${width}, Height: ${height}`);
     }
 
     return (
