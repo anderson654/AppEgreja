@@ -25,7 +25,7 @@ export default function HomeLogin() {
                     <DefaultButton mb={true} mode="outlined" title="Registro" shadow={0} onPress={() => navigation.navigate('Register')} />
 
                     <View style={styles.containerLink}>
-                        <Link fontFamily="Poppins_600SemiBold" underline={true}>Continuar como convidado</Link>
+                        <Link fontFamily="Poppins_600SemiBold" underline={true} onPress={() => navigation.navigate("StackHome")}>Continuar como convidado</Link>
                     </View>
                 </View>
             </View>

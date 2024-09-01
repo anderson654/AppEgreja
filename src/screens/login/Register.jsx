@@ -34,7 +34,7 @@ export default function Register() {
                     <Space20 />
                     <Title>Olá! Registre-se para começar</Title>
                     <Space20 />
-                    <InputEmail  onChangeText={(text) => statusIcon(text)} />
+                    <InputEmail onChangeText={(text) => statusIcon(text)} />
                     <Space20 />
                     {/* <DefaultInput label="E-mail" onChangeText={(text) => statusIcon(text)} />
                     <DefaultInput label="Senha" onChangeText={(text) => statusIcon(text)} />
@@ -44,7 +44,7 @@ export default function Register() {
                     </View> */}
                     <DefaultButton mb={true} title="Registre-se" onPress={() => navigation.navigate('VerifyCode')} />
                     <Space20 />
-                    <TextAndLines text={'Registrar com'}/>
+                    <TextAndLines text={'Registrar com'} />
                     <Space20 />
                     <View style={styles.containerSocialMedia}>
                         <BtnSocialMedia />
@@ -53,10 +53,10 @@ export default function Register() {
             </ContentView>
             {!isKeyboardVisible &&
                 <View style={styles.footer}>
-                    <Text variant="bodyLarge" style={{fontFamily:"Poppins_600SemiBold"}}>
+                    <Text variant="bodyLarge" style={{ fontFamily: "Poppins_600SemiBold" }}>
                         Já tem uma conta?
-                        <Link fontFamily="Poppins_600SemiBold"> Login</Link>
                     </Text>
+                    <Link fontFamily="Poppins_600SemiBold" onPress={() => navigation.navigate('Login')}> Login</Link>
                 </View>
             }
         </DefaultView>
@@ -76,6 +76,6 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         paddingBottom: 30,
         flexDirection: "row",
-        justifyContent: "center"
+        justifyContent: "center",
     }
 });

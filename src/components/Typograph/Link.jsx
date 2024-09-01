@@ -1,8 +1,8 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
 
-export default function Link({ children, color = '#33a4da', fontFamily = '', underline = false }) {
+export default function Link({ children, color = '#33a4da', fontFamily = '', underline = false, onPress }) {
 
     const styleLink = {
         ...styles.linkColor,
@@ -12,7 +12,9 @@ export default function Link({ children, color = '#33a4da', fontFamily = '', und
     }
 
     return (
-        <Text variant="bodyLarge" style={styleLink}>{children}</Text>
+        <TouchableOpacity onPress={onPress}>
+            <Text variant="bodyLarge" style={styleLink}>{children}</Text>
+        </TouchableOpacity>
     )
 }
 

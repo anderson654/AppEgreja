@@ -37,7 +37,7 @@ export default function CreatePassword() {
                     <Space20 />
                     <InputPassword label="Senha" onChangeText={(text) => statusIcon(text)} />
                     <InputPassword label="Confirme a senha" onChangeText={(text) => statusIcon(text)} />
-                    <DefaultButton mb={true} title="Criar senha" onPress={() => {}} />
+                    <DefaultButton mb={true} title="Criar senha" onPress={() => { }} />
                     <Space20 />
                 </KeyBoardView>
             </ContentView>
@@ -45,8 +45,8 @@ export default function CreatePassword() {
                 <View style={styles.footer}>
                     <Text variant="bodyLarge" style={{ fontFamily: "Poppins_600SemiBold" }}>
                         Já tem uma conta?
-                        <Link fontFamily="Poppins_600SemiBold"> Login</Link>
                     </Text>
+                    <Link fontFamily="Poppins_600SemiBold" onPress={() => navigation.navigate('Login')}> Login</Link>
                 </View>
             }
         </DefaultView>
@@ -66,6 +66,6 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         paddingBottom: 30,
         flexDirection: "row",
-        justifyContent: "center"
+        justifyContent: "center",
     }
 });

@@ -12,7 +12,7 @@ const user = createSlice({
         },
         setNullUser: (state) => {
             state.user = null;
-        },
+        }
     },
 });
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setText, setStatus, setType } from "../../context/reducers/alertSnackBar";
 import { StyleSheet, View } from "react-native";
 import DefaultView from "../../components/Views/DefaultView";
@@ -30,6 +30,7 @@ export default function Login() {
     const isKeyboardVisible = useKeyboardStatus();
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const userIsLogued = useSelector(state => !!state.user.user)
 
     async function handlerLogin() {
         setLoading(true);
@@ -63,11 +64,20 @@ export default function Login() {
         return validate !== null;
     };
 
+    const handlerBack = () => {
+        if (!userIsLogued) {
+            navigation.navigate("HomeLogin");
+            return;
+        } else {
+            navigation.goBack();
+        }
+    }
+
     return (
         <DefaultView spaceTopBar={true} background="#fff">
             <ContentView>
                 <KeyBoardView>
-                    <ArrowBack onPress={() => navigation.goBack()} />
+                    <ArrowBack onPress={handlerBack} />
                     <Space20 />
                     <Title>Bem vindo de volta! Que bom ver você aqui de novo!</Title>
                     <Space20 />
@@ -96,9 +106,8 @@ export default function Login() {
                 <View style={styles.footer}>
                     <Text variant="bodyLarge" style={{ fontFamily: "Poppins_600SemiBold" }}>
                         Ainda não tem conta?
-                        <Link fontFamily="Poppins_600SemiBold"> Registre-se agora</Link>
                     </Text>
-
+                    <Link fontFamily="Poppins_600SemiBold" onPress={() => navigation.navigate("Register")}> Registre-se agora</Link>
                 </View>
             }
         </DefaultView>

@@ -17,6 +17,7 @@ export default function Inicial() {
     const dispatch = useDispatch();
     const routes = useNavigationState(state => state.routes);
     const [layout, setLayout] = useState({ width: 0, height: 0 });
+    const userIsLogued = useSelector(state => !!state.user.user)
     // console.log(navigation.getParent().getParent().getState());
 
     const handleLayoutSearch = (event) => {
@@ -25,11 +26,21 @@ export default function Inicial() {
         // console.log(`Width: ${width}, Height: ${height}`);
     }
 
+    const handlerOpenMenuLeft = () => {
+        console.log(userIsLogued);
+        
+        if (!userIsLogued) {
+            navigation.navigate('Login');
+            return;
+        }
+        dispatch(setMenuProfile(true));
+    }
+
     return (
         <>
             <View style={styles.containerSearch} onLayout={handleLayoutSearch}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <ButtonIconSurface onPress={() => dispatch(setMenuProfile(true))} />
+                    <ButtonIconSurface onPress={handlerOpenMenuLeft} />
                     <DefaultInput styles={styles.customStyleInputSearch} mode="outlined" label="Pesquisar um item ou comercio." />
                 </View>
                 <Space20 />
