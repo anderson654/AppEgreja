@@ -42,6 +42,7 @@ export default function MenuProfile() {
     const handlerLogout = async () => {
         await removeKey('_token');
         dispatch(setNullUser());
+        dispatch(setMenuProfile(false));
         navigation.getParent().navigate('HomeLogin');
     }
 

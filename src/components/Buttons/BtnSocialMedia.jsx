@@ -1,13 +1,13 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Surface } from "react-native-paper";
 import { FontAwesome } from '@expo/vector-icons';
 
-export default function BtnSocialMedia() {
+export default function BtnSocialMedia({ onPress }) {
     return (
-        <View style={styles.container}>
+        <TouchableOpacity onPress={onPress} activeOpacity={0.5} style={styles.container}>
             <FontAwesome name="whatsapp" size={32} color="#0cc042" />
-        </View>
+        </TouchableOpacity>
     )
 }
 

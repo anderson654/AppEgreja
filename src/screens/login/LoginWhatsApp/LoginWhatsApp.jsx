@@ -1,72 +1,55 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
+import { setStatus, setAlert } from "../../../context/reducers/alertSnackBar";
 import { StyleSheet, View } from "react-native";
 import DefaultView from "../../../components/Views/DefaultView";
 import ContentView from "../../../components/Views/ContentView";
 import { Title } from "../../../components/Typograph/Typographs";
 import KeyBoardView from "../../../components/Views/KeyBoardView";
 import useKeyboardStatus from "../../../hooks/UseKeyboardStatus";
+import Link from "../../../components/Typograph/Link";
 import DefaultButton from "../../../components/Buttons/DefaultButton";
+import TextAndLines from "../../../components/Typograph/TextAndLines";
 import ArrowBack from "../../../components/Buttons/ArrowBack";
+import BtnSocialMedia from "../../../components/Buttons/BtnSocialMedia";
 import { HelperText, Text } from "react-native-paper";
 import { useNavigation } from '@react-navigation/native';
 import { Space20 } from "../../../components/SpacesLine/Spaces";
-import InputCode from "../../../components/Inputs/InputCode";
-import validateCodeYup from "../../../validations/yup/validateCodeYup";
-import { setAlert } from "../../../context/reducers/alertSnackBar";
-import { loginWhats, getUser, sendCodeWhatsApp } from "../../../apis/EgrejaApi/egreja";
 import { setUser } from "../../../context/reducers/user";
+import InputPhone from "../../../components/Inputs/InputPhone";
+import loginWhatsAppYup from "../../../validations/yup/loginWhatsAppYup";
+import { sendCodeWhatsApp } from "../../../apis/EgrejaApi/egreja";
+import { setPhone as contextSetPhone } from "../../../context/reducers/loginContext";
 
-export default function VerifyCode({ subTitle }) {
+export default function LoginWhatsApp() {
+    const [phone, setPhone] = useState('');
+    const [validate, setValidate] = useState({});
+    const [loading, setLoading] = useState(false);
 
     const isKeyboardVisible = useKeyboardStatus();
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    const loginContext = useSelector(state => state.loginContext);
-
-    const [code, setCode] = useState('');
-    const [validate, setValidate] = useState({});
-    const [loading, setLoading] = useState(false);
+    const userIsLogued = useSelector(state => !!state.user.user)
 
     async function handlerLogin() {
+
         setLoading(true);
         try {
             const errors = await hasErrors();
             if (errors) {
                 return;
             }
-            await loginWhats(loginContext.phone, code);
-            const response = await getUser();
-            dispatch(setUser(response.data));
-            dispatch(setAlert({
-                type: 'sucess',
-                text: 'Código válido, seja bem-vindo.'
-            }));
-            navigation.navigate("StackHome");
-        } catch (error) {
-            if (error?.status == '401') {
-                dispatch(setAlert({
-                    type: 'error',
-                    text: 'Erro ao verificar o código.'
-                }));
-            }
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    async function handlerResendCodeVerification() {
-        setLoading(true);
-        try {
-            await sendCodeWhatsApp(loginContext.phone);
+            await sendCodeWhatsApp(phone);
             dispatch(setAlert({
                 type: 'sucess',
                 text: 'Código enviado com sucesso.'
             }));
+            dispatch(contextSetPhone(phone));
+            navigation.navigate("VerifyCodeWhatsApp");
         } catch (error) {
             dispatch(setAlert({
                 type: 'error',
-                text: 'Erro ao verificar o código.'
+                text: 'Telefone inválido ou não encontrado.'
             }));
         } finally {
             setLoading(false);
@@ -74,41 +57,53 @@ export default function VerifyCode({ subTitle }) {
     }
 
     const hasErrors = async () => {
-
-        const validate = await validateCodeYup({
-            code
+        const validate = await loginWhatsAppYup({
+            phone
         });
-
         setValidate(validate);
 
         return validate !== null;
     };
 
+    const handlerBack = () => {
+        if (!userIsLogued) {
+            navigation.navigate("HomeLogin");
+            return;
+        } else {
+            navigation.goBack();
+        }
+    }
+
     return (
         <DefaultView spaceTopBar={true} background="#fff">
             <ContentView>
                 <KeyBoardView>
-                    <ArrowBack onPress={() => navigation.goBack()} />
+                    <ArrowBack onPress={handlerBack} />
                     <Space20 />
-                    <Title>Verificação de código</Title>
-                    <Text variant="bodyLarge" style={{ color: "#757575" }}>{subTitle}</Text>
+                    <Title>Bem vindo de volta! Que bom ver você aqui de novo!</Title>
                     <Space20 />
-                    <InputCode onChangeText={(text) => setCode(text)} error={!!validate?.code} />
-                    <HelperText type="error" visible={!!validate?.code}>
-                        {validate?.code}
+                    <InputPhone label="Telefone" onChangeText={(text) => setPhone(text)} icon="phone" error={!!validate?.phone} />
+                    <HelperText type="error" visible={!!validate?.phone}>
+                        {validate?.phone}
                     </HelperText>
+                    <View style={styles.containerLinkPassword}>
+                        <Link color="#757575">Perdeu seu número?</Link>
+                    </View>
+                    <DefaultButton mb={true} title="Receber código" onPress={() => handlerLogin()} loading={loading} />
                     <Space20 />
-
-                    <DefaultButton mb={true} title="Verificar código" onPress={handlerLogin} loading={loading} />
+                    <TextAndLines />
                     <Space20 />
+                    <View style={styles.containerSocialMedia}>
+                        <BtnSocialMedia onPress={() => console.log('Hello')} />
+                    </View>
                 </KeyBoardView>
             </ContentView>
             {!isKeyboardVisible &&
                 <View style={styles.footer}>
                     <Text variant="bodyLarge" style={{ fontFamily: "Poppins_600SemiBold" }}>
-                        Não rececbeu o código?
+                        Ainda não tem conta?
                     </Text>
-                    <DefaultButton mb={true} mode="outlined" title="Enviar outro" shadow={0} onPress={handlerResendCodeVerification} loading={loading} />
+                    <Link fontFamily="Poppins_600SemiBold" onPress={() => navigation.navigate("Register")}> Registre-se agora</Link>
                 </View>
             }
         </DefaultView>
@@ -125,9 +120,8 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     footer: {
-        padding: 20,
-        paddingBottom: 30,
-        justifyContent: "center",
-        textAlign: "center"
+        paddingVertical: 40,
+        flexDirection: "row",
+        justifyContent: "center"
     }
 });

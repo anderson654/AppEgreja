@@ -17,8 +17,13 @@ const snackBar = createSlice({
         setType: (state, action) => {
             state.type = action.payload;
         },
+        setAlert: (state, action) => {
+            state.text = action.payload.text;
+            state.type = action.payload.type;
+            state.status = true;
+        }
     },
 });
 
-export const { setStatus, setText, setType } = snackBar.actions;
+export const { setStatus, setText, setType, setAlert } = snackBar.actions;
 export default snackBar.reducer;

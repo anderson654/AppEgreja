@@ -98,7 +98,7 @@ export default function Login() {
                     <TextAndLines />
                     <Space20 />
                     <View style={styles.containerSocialMedia}>
-                        <BtnSocialMedia />
+                        <BtnSocialMedia onPress={() => navigation.navigate('LoginWhatsApp')} />
                     </View>
                 </KeyBoardView>
             </ContentView>

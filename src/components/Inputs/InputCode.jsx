@@ -1,7 +1,7 @@
 import React from "react";
 import { TextInput } from "react-native-paper";
 
-export default function InputCode({ mode = 'flat', onChangeText }) {
+export default function InputCode({ mode = 'flat', onChangeText, error }) {
 
     const [text, setText] = React.useState("");
 
@@ -23,6 +23,9 @@ export default function InputCode({ mode = 'flat', onChangeText }) {
             mode={mode}
             style={{ marginBottom: 20 }}
             autoCorrect={false}
+            inputMode="numeric"
+            maxLength={6}
+            error={error}
         />
     );
 }

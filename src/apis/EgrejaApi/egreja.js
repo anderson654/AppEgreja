@@ -22,4 +22,21 @@ export async function getUser() {
     return response;
 }
 
+export async function sendCodeWhatsApp(phone) {
+    const response = await axios.post('/sendCodeWhatsApp', {
+        phone
+    });
+    return response;
+}
+
+export async function loginWhats(phone, code) {
+    const response = await axios.post('/loginWhatsApp', {
+        phone,
+        code
+    });
+    axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+    await saveOrUpdateKey('_token', response.data.token);
+    return response;
+}
+
 

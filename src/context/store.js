@@ -3,11 +3,13 @@ import menuHome from './reducers/menuHome';
 import menuProfile from './reducers/menuProfile';
 import user from './reducers/user';
 import alertSnackBar from './reducers/alertSnackBar';
+import loginContext from './reducers/loginContext';
 
 const store = combineReducers({
   alertSnackBar,
   menuHome,
   menuProfile,
+  loginContext,
   user
 });
 
