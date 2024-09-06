@@ -14,15 +14,18 @@ import { Space20 } from "../../../components/SpacesLine/Spaces";
 import InputCode from "../../../components/Inputs/InputCode";
 import validateCodeYup from "../../../validations/yup/validateCodeYup";
 import { setAlert } from "../../../context/reducers/alertSnackBar";
-import { loginWhats, getUser, sendCodeWhatsApp } from "../../../apis/EgrejaApi/egreja";
+import { loginCode, getUser, sendCodeWhatsApp } from "../../../apis/EgrejaApi/egreja";
 import { setUser } from "../../../context/reducers/user";
 
-export default function VerifyCode({ subTitle }) {
+export default function VerifyCodeEmail() {
 
     const isKeyboardVisible = useKeyboardStatus();
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const loginContext = useSelector(state => state.loginContext);
+
+    console.log(loginContext);
+    
 
     const [code, setCode] = useState('');
     const [validate, setValidate] = useState({});
@@ -35,7 +38,7 @@ export default function VerifyCode({ subTitle }) {
             if (errors) {
                 return;
             }
-            await loginWhats(loginContext.phone, code);
+            await loginCode(null, loginContext.email, 'email', code);
             const response = await getUser();
             dispatch(setUser(response.data));
             dispatch(setAlert({
@@ -58,7 +61,7 @@ export default function VerifyCode({ subTitle }) {
     async function handlerResendCodeVerification() {
         setLoading(true);
         try {
-            await sendCodeWhatsApp(loginContext.phone);
+            await sendCodeWhatsApp(loginContext.email);
             dispatch(setAlert({
                 type: 'sucess',
                 text: 'Código enviado com sucesso.'
@@ -91,7 +94,7 @@ export default function VerifyCode({ subTitle }) {
                     <ArrowBack onPress={() => navigation.goBack()} />
                     <Space20 />
                     <Title>Verificação de código</Title>
-                    <Text variant="bodyLarge" style={{ color: "#757575" }}>{subTitle}</Text>
+                    <Text variant="bodyLarge" style={{ color: "#757575" }}>Enviamos um código de verificação para o seu e-mail: <Text style={{ color: "#33a4da" }}> {loginContext.email || ''}</Text> ,verifique o sua caixa de entrada.</Text>
                     <Space20 />
                     <InputCode onChangeText={(text) => setCode(text)} error={!!validate?.code} />
                     <HelperText type="error" visible={!!validate?.code}>

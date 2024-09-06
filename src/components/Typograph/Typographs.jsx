@@ -6,6 +6,7 @@ export function Title({ children, fontFamily }) {
     const styleTitle = {
         ...styles.font,
         fontFamily: fontFamily || 'Poppins_600SemiBold',
+        // color: 'rgb(87,87,87)'
     }
 
     return (

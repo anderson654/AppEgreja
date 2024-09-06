@@ -4,7 +4,6 @@ import Home from '../screens/Home/Home';
 import HomeLogin from '../screens/login/HomeLogin';
 import Login from '../screens/login/Login';
 import Register from '../screens/login/Register';
-import VerifyCode from '../screens/login/SubSteps/VerifyCode';
 import CreatePassword from '../screens/login/SubSteps/CreatePassword';
 import MenuHome from '../components/Menus/MenuHome';
 

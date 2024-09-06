@@ -29,13 +29,25 @@ export async function sendCodeWhatsApp(phone) {
     return response;
 }
 
-export async function loginWhats(phone, code) {
-    const response = await axios.post('/loginWhatsApp', {
-        phone,
+export async function loginCode(phone, email, type_input, code) {
+
+    const data = {
+        ...(phone && { phone }),
+        ...(email && { email }),
+        type_input,
         code
-    });
+    }
+
+    const response = await axios.post('/loginCode', data);
     axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
     await saveOrUpdateKey('_token', response.data.token);
+    return response;
+}
+
+export async function sendCodeEmail(email) {
+    const response = await axios.post('/sendCodeEmail', {
+        email
+    });
     return response;
 }
 

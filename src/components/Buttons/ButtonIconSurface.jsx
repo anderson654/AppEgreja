@@ -1,8 +1,10 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
-import { Icon, Surface } from "react-native-paper";
+import { Icon, Surface, useTheme } from "react-native-paper";
 
 export default function ButtonIconSurface({ onPress = () => { }, icon="menu-open", elevation = 1, styles = {} }) {
+
+    const theme = useTheme();
 
     const styleSurface = {
         ...internalStyles.surface,
@@ -14,7 +16,7 @@ export default function ButtonIconSurface({ onPress = () => { }, icon="menu-open
             <Surface style={styleSurface} elevation={elevation}>
                 <Icon
                     source={icon}
-                    color={'#000'}
+                    color={ theme.colors.primary }
                     size={25}
                 />
             </Surface>

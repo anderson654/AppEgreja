@@ -1,6 +1,6 @@
 const whiteTheme = {
     "colors": {
-        "primary": "#1e232c",
+        "primary": "rgb(99, 170, 187)", //x
         "onPrimary": "rgb(255, 255, 255)",
         "primaryContainer": "rgb(240, 219, 255)",
         "onPrimaryContainer": "rgb(44, 0, 81)",
@@ -19,7 +19,7 @@ const whiteTheme = {
         "background": "#f7f8f9",
         "onBackground": "rgb(29, 27, 30)",
         "surface": "rgb(255, 251, 255)",
-        "onSurface": "rgb(29, 27, 30)",
+        "onSurface": "rgb(87,87,87)", //x
         "surfaceVariant": "#f7f8f9",
         "onSurfaceVariant": "rgb(74, 69, 78)",
         "outline": "rgb(124, 117, 126)",

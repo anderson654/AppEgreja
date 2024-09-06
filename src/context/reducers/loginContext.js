@@ -11,11 +11,11 @@ const login = createSlice({
         setPhone: (state, action) => {
             state.phone = action.payload;
         },
-        setEmail: (state) => {
-            state.email = null;
+        setEmail: (state, action) => {
+            state.email = action.payload;
         }
     },
 });
 
-export const { setPhone } = login.actions;
+export const { setPhone, setEmail } = login.actions;
 export default login.reducer;
