@@ -51,4 +51,20 @@ export async function sendCodeEmail(email) {
     return response;
 }
 
+export async function createUserEmail(email) {
+    const response = await axios.post('/createUserEmail', {
+        email
+    });
+    return response;
+}
+
+export async function createUserPhone(phone) {
+    const response = await axios.post('/createUserPhone', {
+        phone
+    });
+    return response;
+}
+
+
+
 

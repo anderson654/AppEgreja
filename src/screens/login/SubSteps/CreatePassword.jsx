@@ -36,7 +36,9 @@ export default function CreatePassword() {
                     <Text variant="bodyLarge" style={{ color: "#757575" }}>Por favor, crie uma senha segura para continuar.</Text>
                     <Space20 />
                     <InputPassword label="Senha" onChangeText={(text) => statusIcon(text)} />
+                    <Space20 />
                     <InputPassword label="Confirme a senha" onChangeText={(text) => statusIcon(text)} />
+                    <Space20 />
                     <DefaultButton mb={true} title="Criar senha" onPress={() => { }} />
                     <Space20 />
                 </KeyBoardView>

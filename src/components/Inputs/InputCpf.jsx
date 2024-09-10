@@ -1,10 +1,9 @@
 import React from "react";
 import { TextInput } from "react-native-paper";
 import { formatWithMask } from 'react-native-mask-input';
-import { filterMaskText } from "../../utils/filterMaskedValue";
-import { maskPhone } from "../../utils/customMasks";
+import {  maskCpf } from "../../utils/customMasks";
 
-export default function InputPhone({ mode = 'flat', label = "none", onChangeText, error, initialValue = "" }) {
+export default function InputCpf({ mode = 'flat', label = "none", onChangeText, error, initialValue = "" }) {
 
     const [text, setText] = React.useState(initialValue);
 
@@ -13,7 +12,7 @@ export default function InputPhone({ mode = 'flat', label = "none", onChangeText
         // Utiliza formatWithMask para aplicar a máscara, remover a máscara e ofuscar
         const { masked, unmasked } = formatWithMask({
             text: currentText,
-            mask: maskPhone,
+            mask: maskCpf,
         });
 
         setText(masked);
@@ -30,7 +29,6 @@ export default function InputPhone({ mode = 'flat', label = "none", onChangeText
             value={text}
             onChangeText={text => handleChange(text)}
             mode={mode}
-            right={<TextInput.Icon forceTextInputFocus={true} icon={"phone"} />}
             error={error}
             inputMode="numeric"
         />

@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { setAlert } from "../../context/reducers/alertSnackBar";
+import { setStatus, setAlert } from "../../context/reducers/alertSnackBar";
 import { StyleSheet, View } from "react-native";
 import DefaultView from "../../components/Views/DefaultView";
 import ContentView from "../../components/Views/ContentView";
 import { Title } from "../../components/Typograph/Typographs";
 import KeyBoardView from "../../components/Views/KeyBoardView";
 import useKeyboardStatus from "../../hooks/UseKeyboardStatus";
-import InputPassword from "../../components/Inputs/InputPassword";
 import Link from "../../components/Typograph/Link";
 import DefaultButton from "../../components/Buttons/DefaultButton";
 import TextAndLines from "../../components/Typograph/TextAndLines";
@@ -16,16 +15,14 @@ import BtnSocialMedia from "../../components/Buttons/BtnSocialMedia";
 import { HelperText, Text } from "react-native-paper";
 import { useNavigation } from '@react-navigation/native';
 import { Space20 } from "../../components/SpacesLine/Spaces";
-import InputEmail from "../../components/Inputs/InputEmail";
-import validateLoginYup from "../../validations/yup/loginValidation";
-import { loginEmail, getUser, sendCodeEmail, createUserEmail } from "../../apis/EgrejaApi/egreja";
 import { setUser } from "../../context/reducers/user";
-import { setEmail as setEmailContext } from "../../context/reducers/loginContext";
+import InputPhone from "../../components/Inputs/InputPhone";
+import loginWhatsAppYup from "../../validations/yup/loginWhatsAppYup";
+import { sendCodeWhatsApp, createUserPhone } from "../../apis/EgrejaApi/egreja";
+import { setPhone as contextSetPhone } from "../../context/reducers/loginContext";
 
-import sendCodeEmailYup from "../../validations/yup/sendCodeEmailYup";
-
-export default function Register() {
-    const [email, setEmail] = useState('');
+export default function RegisterWhatsApp() {
+    const [phone, setPhone] = useState('');
     const [validate, setValidate] = useState({});
     const [loading, setLoading] = useState(false);
 
@@ -34,38 +31,35 @@ export default function Register() {
     const dispatch = useDispatch();
     const userIsLogued = useSelector(state => !!state.user.user)
 
-    async function handlerSendCodeEmail() {
+    async function handlerLogin() {
+
         setLoading(true);
         try {
             const errors = await hasErrors();
             if (errors) {
                 return;
             }
-            await createUserEmail(email);
-            await sendCodeEmail(email);
-            dispatch(setEmailContext(email));
+            await createUserPhone(phone);
+            await sendCodeWhatsApp(phone);
             dispatch(setAlert({
                 type: 'sucess',
-                text: 'Código enviado.'
+                text: 'Código enviado com sucesso.'
             }));
-            navigation.navigate("VerifyCodeEmail");
+            dispatch(contextSetPhone(phone));
+            navigation.navigate("VerifyCodeWhatsApp");
         } catch (error) {
-            console.log(error.response.data);
-
-            if (error?.status == '401') {
-                dispatch(setAlert({
-                    type: 'error',
-                    text: error?.response?.data?.message || 'Erro ao registrar usuário.'
-                }));
-            }
+            dispatch(setAlert({
+                type: 'error',
+                text: error?.response?.data?.message || 'Telefone inválido ou não encontrado.'
+            }));
         } finally {
             setLoading(false);
         }
     }
 
     const hasErrors = async () => {
-        const validate = await sendCodeEmailYup({
-            email
+        const validate = await loginWhatsAppYup({
+            phone
         });
         setValidate(validate);
 
@@ -89,19 +83,19 @@ export default function Register() {
                     <Space20 />
                     <Title>Olá! Registre-se para começar</Title>
                     <Space20 />
-                    <InputEmail label="E-mail" onChangeText={(text) => setEmail(text)} icon="email" error={!!validate?.email} />
-                    <HelperText type="error" visible={!!validate?.email}>
-                        {validate?.email}
+                    <InputPhone label="Telefone" onChangeText={(text) => setPhone(text)} icon="phone" error={!!validate?.phone} />
+                    <HelperText type="error" visible={!!validate?.phone}>
+                        {validate?.phone}
                     </HelperText>
                     <View style={styles.containerLinkPassword}>
-                        <Link color="#757575">Perdeu o e-mail?</Link>
+                        <Link color="#757575">Perdeu seu número?</Link>
                     </View>
-                    <DefaultButton mb={true} title="Registrar-se" onPress={() => handlerSendCodeEmail()} loading={loading} />
+                    <DefaultButton mb={true} title="Registrar-se" onPress={() => handlerLogin()} loading={loading} />
                     <Space20 />
-                    <TextAndLines text="Registre-se com" />
+                    <TextAndLines />
                     <Space20 />
                     <View style={styles.containerSocialMedia}>
-                        <BtnSocialMedia onPress={() => navigation.navigate('RegisterWhatsApp')} />
+                        <BtnSocialMedia onPress={() => console.log('Hello')} />
                     </View>
                 </KeyBoardView>
             </ContentView>
@@ -132,4 +126,3 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     }
 });
-

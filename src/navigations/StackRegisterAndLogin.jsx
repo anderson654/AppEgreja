@@ -9,6 +9,7 @@ import LoginWhatsApp from '../screens/login/LoginWhatsApp/LoginWhatsApp';
 import VerifyCodeWhatsApp from '../screens/login/LoginWhatsApp/VerifyCodeWhatsApp';
 import LoginEmail from '../screens/login/LoginEmail/LoginEmail';
 import VerifyCodeEmail from '../screens/login/LoginEmail/VerifyCodeEmail';
+import RegisterWhatsApp from '../screens/login/RegisterWhatsApp';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,7 @@ export default function StackRegisterAndLogin() {
             <Stack.Screen name="CreatePassword" component={CreatePassword} />
             <Stack.Screen name="LoginEmail" component={LoginEmail} />
             <Stack.Screen name="VerifyCodeEmail" component={VerifyCodeEmail} />
+            <Stack.Screen name="RegisterWhatsApp" component={RegisterWhatsApp} />
         </Stack.Navigator>
     );
 }
