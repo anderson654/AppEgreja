@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { StyleSheet, View } from "react-native";
 import DefaultView from "../../components/Views/DefaultView";
@@ -13,26 +13,108 @@ import DefaultButton from "../../components/Buttons/DefaultButton";
 import TextAndLines from "../../components/Typograph/TextAndLines";
 import ArrowBack from "../../components/Buttons/ArrowBack";
 import BtnSocialMedia from "../../components/Buttons/BtnSocialMedia";
-import { Text } from "react-native-paper";
+import { HelperText, Text } from "react-native-paper";
 import { useNavigation } from '@react-navigation/native';
 import { Space20 } from "../../components/SpacesLine/Spaces";
 import InputEmail from "../../components/Inputs/InputEmail";
 import InputName from "../../components/Inputs/InputName";
 import InputPhone from "../../components/Inputs/InputPhone";
 import InputCpf from "../../components/Inputs/InputCpf";
+import updateUserYup from "../../validations/yup/updateUserYup";
+import { setAlert } from "../../context/reducers/alertSnackBar";
+import { updateUser as updateUserApi, getUser } from "../../apis/EgrejaApi/egreja";
+import { setUser } from "../../context/reducers/user";
 
 
 export default function UpdateUser() {
-
-    const isKeyboardVisible = useKeyboardStatus();
-    const navigation = useNavigation();
-
     const contextUser = useSelector(state => state.user.user);
-    console.log(contextUser);
 
-    function statusIcon(status) {
-        console.log("@ahhaha", status);
+    const [username, setUserName] = useState(contextUser.username);
+    const [email, setEmail] = useState(contextUser.email);
+    const [phone, setPhone] = useState(contextUser.phone);
+    const [cpf, setCpf] = useState(contextUser.cpf);
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    // const isKeyboardVisible = useKeyboardStatus();
+    const navigation = useNavigation();
+    const dispatch = useDispatch();
+
+    const [validate, setValidate] = useState({});
+    const [validatePassword, setValidatePassword] = useState({});
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (contextUser.username) {
+            navigation.navigate("Home");
+        }
+    }, [contextUser]);
+
+    async function handlerUpdateUser() {
+        setLoading(true);
+        try {
+            const errors = await hasErrors();
+            const errorsPassword = await hasErrorsPassword();
+
+            if (errors) {
+                return;
+            }
+
+            if (!contextUser.exist_password && errorsPassword) {
+                return;
+            }
+
+            const data = {
+                username,
+                email,
+                phone,
+                cpf,
+                ...(!contextUser.exist_password && {
+                    password,
+                    confirmPassword
+                })
+            }
+
+            await updateUserApi(data);
+            const response = await getUser();
+            dispatch(setUser(response.data));
+            dispatch(setAlert({
+                type: 'sucess',
+                text: 'Dados atualizados com sucesso.'
+            }));
+            navigation.navigate("Home");
+        } catch (error) {
+            dispatch(setAlert({
+                type: 'error',
+                text: error?.response?.data?.message || 'Erro ao salvar os dados pessoais.'
+            }));
+        } finally {
+            setLoading(false);
+        }
     }
+
+
+    const hasErrors = async () => {
+        const validate = await updateUserYup({
+            username,
+            email,
+            phone,
+            cpf
+        });
+        setValidate(validate);
+
+        return validate !== null;
+    };
+
+    const hasErrorsPassword = async () => {
+        const validate = await updateUserYup({
+            password,
+            confirmPassword
+        });
+        setValidatePassword(validate);
+
+        return validate !== null;
+    };
 
     return (
         <DefaultView spaceTopBar={true} background="#fff">
@@ -45,23 +127,38 @@ export default function UpdateUser() {
                     <View style={styles.linkClause}>
                         <Link onPress={() => navigation.navigate('Clause')}>Leia mais.</Link>
                     </View>
-                    <Space20 />
-                    <InputName label="Nome" initialValue={contextUser.username}/>
-                    <Space20 />
-                    <InputEmail label="E-mail" initialValue={contextUser.email}/>
-                    <Space20 />
-                    <InputPhone label="Telefone" initialValue={contextUser.phone}/>
-                    <Space20 />
-                    <InputCpf label="CPF" initialValue={contextUser.cpf}/>
-                    <Space20 />
-                    <Title>Criar Senha.</Title>
-                    <Text variant="bodyLarge" style={{ color: "#757575" }}>Por favor, crie uma senha segura para continuar.</Text>
-                    <Space20 />
-                    <InputPassword label="Senha" onChangeText={(text) => statusIcon(text)} />
-                    <Space20 />
-                    <InputPassword label="Confirme a senha" onChangeText={(text) => statusIcon(text)} />
-                    <Space20 />
-                    <DefaultButton mb={true} title="Criar senha" onPress={() => { }} />
+                    <InputName label="Nome" onChangeText={setUserName} initialValue={username} error={!!validate?.username} />
+                    <HelperText type="error" visible={!!validate?.username}>
+                        {validate?.username}
+                    </HelperText>
+                    <InputEmail label="E-mail" onChangeText={setEmail} initialValue={email} error={!!validate?.email} />
+                    <HelperText type="error" visible={!!validate?.email}>
+                        {validate?.email}
+                    </HelperText>
+                    <InputPhone label="Telefone" onChangeText={setPhone} initialValue={phone} error={!!validate?.phone} />
+                    <HelperText type="error" visible={!!validate?.phone}>
+                        {validate?.phone}
+                    </HelperText>
+                    <InputCpf label="CPF" onChangeText={setCpf} initialValue={cpf} error={!!validate?.cpf} />
+                    <HelperText type="error" visible={!!validate?.cpf}>
+                        {validate?.cpf}
+                    </HelperText>
+                    {!contextUser.exist_password &&
+                        <>
+                            <Title>Criar Senha.</Title>
+                            <Text variant="bodyLarge" style={{ color: "#757575" }}>Por favor, crie uma senha segura para continuar.</Text>
+                            <Space20 />
+                            <InputPassword label="Senha" onChangeText={setPassword} error={!!validatePassword?.password} />
+                            <HelperText type="error" visible={!!validatePassword?.password} >
+                                {validatePassword?.password}
+                            </HelperText>
+                            <InputPassword label="Confirme a senha" onChangeText={setConfirmPassword} error={!!validatePassword?.confirmPassword} />
+                            <HelperText type="error" visible={!!validatePassword?.confirmPassword}>
+                                {validatePassword?.confirmPassword}
+                            </HelperText>
+                        </>
+                    }
+                    <DefaultButton mb={true} title="Atualizar dados" onPress={handlerUpdateUser} loading={loading} />
                     <Space20 />
                 </KeyBoardView>
             </ContentView>

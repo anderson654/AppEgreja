@@ -64,6 +64,10 @@ export async function createUserPhone(phone) {
     });
     return response;
 }
+export async function updateUser(data) {
+    const response = await axios.post('/updateUser', data);
+    return response;
+}
 
 
 
