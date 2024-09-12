@@ -24,15 +24,16 @@ import updateUserYup from "../../validations/yup/updateUserYup";
 import { setAlert } from "../../context/reducers/alertSnackBar";
 import { updateUser as updateUserApi, getUser } from "../../apis/EgrejaApi/egreja";
 import { setUser } from "../../context/reducers/user";
+import validatePasswordYup from "../../validations/yup/validatePasswordYup";
 
 
 export default function UpdateUser() {
     const contextUser = useSelector(state => state.user.user);
 
-    const [username, setUserName] = useState(contextUser.username);
-    const [email, setEmail] = useState(contextUser.email);
-    const [phone, setPhone] = useState(contextUser.phone);
-    const [cpf, setCpf] = useState(contextUser.cpf);
+    const [username, setUserName] = useState(contextUser?.username);
+    const [email, setEmail] = useState(contextUser?.email);
+    const [phone, setPhone] = useState(contextUser?.phone);
+    const [cpf, setCpf] = useState(contextUser?.cpf);
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -45,9 +46,10 @@ export default function UpdateUser() {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (contextUser.username) {
-            navigation.navigate("Home");
+        if (contextUser && !contextUser?.username) {
+            return;
         }
+        navigation.navigate("Home");
     }, [contextUser]);
 
     async function handlerUpdateUser() {
@@ -60,7 +62,9 @@ export default function UpdateUser() {
                 return;
             }
 
-            if (!contextUser.exist_password && errorsPassword) {
+            if (!contextUser?.exist_password && errorsPassword) {
+                console.log(!contextUser?.exist_password, errorsPassword);
+                
                 return;
             }
 
@@ -69,7 +73,7 @@ export default function UpdateUser() {
                 email,
                 phone,
                 cpf,
-                ...(!contextUser.exist_password && {
+                ...(!contextUser?.exist_password && {
                     password,
                     confirmPassword
                 })
@@ -77,6 +81,7 @@ export default function UpdateUser() {
 
             await updateUserApi(data);
             const response = await getUser();
+            
             dispatch(setUser(response.data));
             dispatch(setAlert({
                 type: 'sucess',
@@ -107,7 +112,7 @@ export default function UpdateUser() {
     };
 
     const hasErrorsPassword = async () => {
-        const validate = await updateUserYup({
+        const validate = await validatePasswordYup({
             password,
             confirmPassword
         });
@@ -143,7 +148,7 @@ export default function UpdateUser() {
                     <HelperText type="error" visible={!!validate?.cpf}>
                         {validate?.cpf}
                     </HelperText>
-                    {!contextUser.exist_password &&
+                    {!contextUser?.exist_password &&
                         <>
                             <Title>Criar Senha.</Title>
                             <Text variant="bodyLarge" style={{ color: "#757575" }}>Por favor, crie uma senha segura para continuar.</Text>

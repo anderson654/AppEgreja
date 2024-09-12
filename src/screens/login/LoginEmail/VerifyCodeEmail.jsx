@@ -47,12 +47,13 @@ export default function VerifyCodeEmail() {
             }));
             navigation.navigate("StackHome");
         } catch (error) {
-            if (error?.status == '401') {
-                dispatch(setAlert({
-                    type: 'error',
-                    text: 'Erro ao verificar o código.'
-                }));
-            }
+
+            console.log(error);
+            
+            dispatch(setAlert({
+                type: 'error',
+                text: error?.response?.data?.message || 'Erro ao verificar o código.'
+            }));
         } finally {
             setLoading(false);
         }
