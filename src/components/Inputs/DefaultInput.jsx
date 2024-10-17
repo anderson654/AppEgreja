@@ -1,7 +1,7 @@
 import React from "react";
-import { TextInput } from "react-native-paper";
+import { HelperText, TextInput } from "react-native-paper";
 
-export default function DefaultInput({ mode = 'flat', label = 'E-mail', onChangeText, autoCorrect = false, mb = true, styles, icon = "shopping-search", error }) {
+export default function DefaultInput({ mode = 'flat', label = 'E-mail', onChangeText, autoCorrect = false, mb = true, styles, icon = "", error }) {
 
     const [text, setText] = React.useState("");
 
@@ -16,15 +16,20 @@ export default function DefaultInput({ mode = 'flat', label = 'E-mail', onChange
     }
 
     return (
-        <TextInput
-            label={label}
-            value={text}
-            onChangeText={text => handlerText(text)}
-            mode={mode}
-            style={{ ...styles }}
-            autoCorrect={autoCorrect}
-            right={<TextInput.Icon onPress={() => { }} forceTextInputFocus={false} icon={icon} />}
-            error={error}
-        />
+        <>
+            <TextInput
+                label={label}
+                value={text}
+                onChangeText={text => handlerText(text)}
+                mode={mode}
+                style={{ ...styles }}
+                autoCorrect={autoCorrect}
+                right={<TextInput.Icon onPress={() => { }} forceTextInputFocus={false} icon={icon} />}
+                error={error}
+            />
+            <HelperText type="error" visible={!!error || error != ''}>
+                {error}
+            </HelperText>
+        </>
     );
 }

@@ -6,6 +6,7 @@ import StackRegisterAndLogin from '../navigations/StackRegisterAndLogin';
 import { getUser } from '../apis/EgrejaApi/egreja';
 import { setUser } from '../context/reducers/user';
 import SnackbarPaper from '../components/Alerts/SnackbarPaper';
+import DefaultModal from '../components/Modals/DefaultModal';
 
 export default function Index() {
 
@@ -30,6 +31,7 @@ export default function Index() {
             <StackRegisterAndLogin />
             <StatusBar style="auto" />
             <SnackbarPaper />
+            <DefaultModal />
         </View>
     );
 }

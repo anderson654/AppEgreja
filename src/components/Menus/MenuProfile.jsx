@@ -46,6 +46,10 @@ export default function MenuProfile() {
         navigation.getParent().navigate('HomeLogin');
     }
 
+    function closeMenu() {
+        dispatch(setMenuProfile(false));
+    }
+
     return (
         <Modal
             animationType="slide"
@@ -69,7 +73,7 @@ export default function MenuProfile() {
                         <Text variant="titleLarge" style={{ fontFamily: 'Poppins_600SemiBold' }}>Anderson Gabriel</Text>
                     </View>
                 </View>
-                <LineItemMenu title={'Comece a vender'} subTitle={'Crie seu próprio estabelecimento online'} icon="storefront-outline" />
+                <LineItemMenu title={'Comece a vender'} subTitle={'Crie seu próprio estabelecimento online'} icon="storefront-outline" onPress={() => { closeMenu(), navigation.navigate('StackAfiliate') }} />
                 <LineItemMenu title={'Meus Dados'} subTitle={'Mais informaçoes de conta'} icon="square-edit-outline" />
                 <LineItemMenu title={'Meu Perfil'} subTitle={'Minhas informações do perfil'} icon="account-circle-outline" />
                 <LineItemMenu title={'Meus Anúncios'} subTitle={'Meus anúncios avulsos'} icon="message-text-clock-outline" />

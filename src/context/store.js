@@ -4,13 +4,15 @@ import menuProfile from './reducers/menuProfile';
 import user from './reducers/user';
 import alertSnackBar from './reducers/alertSnackBar';
 import loginContext from './reducers/loginContext';
+import modals from './reducers/modals';
 
 const store = combineReducers({
   alertSnackBar,
   menuHome,
   menuProfile,
   loginContext,
-  user
+  user,
+  modals
 });
 
 const rootReducer = (state, action) => {
