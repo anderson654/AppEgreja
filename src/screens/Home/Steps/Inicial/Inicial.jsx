@@ -27,8 +27,6 @@ export default function Inicial() {
     }
 
     const handlerOpenMenuLeft = () => {
-        console.log(userIsLogued);
-        
         if (!userIsLogued) {
             navigation.navigate('Login');
             return;

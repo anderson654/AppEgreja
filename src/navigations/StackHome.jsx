@@ -20,6 +20,7 @@ export default function StackHome() {
             <Stack.Screen name="UpdateUser" component={UpdateUser} />
             <Stack.Screen name="Clause" component={Clause} />
             <Stack.Screen name="Home" component={Home} />
+            {/* //deve ser criado aqui se vc não quiser o menu embaixo  */}
         </Stack.Navigator>
     );
 }

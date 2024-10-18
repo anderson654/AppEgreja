@@ -75,6 +75,16 @@ export async function createNewOrganization(data) {
     return response;
 }
 
+export async function createNewProductAndService(data) {
+    const response = await axios.post('/empreende/services/store', data);
+    return response;
+}
+
+export async function getServiceCategories(data) {
+    const response = await axios.get('/empreende/services/categories', data);
+    return response;
+}
+
 
 
 

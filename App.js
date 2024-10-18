@@ -3,7 +3,7 @@
 import './src/apis/axiosInstances/axiosConfig';
 import { useCallback, useEffect, useState } from 'react';
 import { useMaterial3Theme } from '@pchmn/expo-material3-theme';
-import { NativeBaseProvider } from 'native-base';
+import { NativeBaseProvider, extendTheme } from 'native-base';
 import { StyleSheet, useColorScheme, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import store from './src/context/store';
@@ -72,6 +72,14 @@ export default function App() {
       ? { ...DefaultTheme, colors: defaultBlackTheme.colors }
       : { ...DefaultTheme, colors: defaultWhithTheme.colors };
 
+  const customTheme = extendTheme({
+    colors: {
+      primary: {
+        600: 'rgb(99, 170, 187)', // Define checkbox color para native-base ajustes
+      },
+    }
+  });
+
 
 
   useEffect(() => {
@@ -112,7 +120,7 @@ export default function App() {
       <Provider store={store}>
         <NavigationContainer>
           <PaperProvider theme={paperTheme}>
-            <NativeBaseProvider>
+            <NativeBaseProvider theme={customTheme}>
               <Index />
             </NativeBaseProvider>
           </PaperProvider>

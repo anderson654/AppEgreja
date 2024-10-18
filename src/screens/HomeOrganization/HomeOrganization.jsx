@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { View } from "react-native";
 import { openModal } from "../../context/reducers/modals";
+import ProductsAndServices from "../ProductsAndServices/ProductsAndServices";
 
 export default function HomeOrganization() {
     const dispatch = useDispatch();
-    const user = useSelector(state => state.user);
+    const user = useSelector(state => state.user.user);
 
     useEffect(() => {
         if (!user.organization) {
@@ -14,6 +14,6 @@ export default function HomeOrganization() {
     }, []);
 
     return (
-        <View style={{ flex: 1 }}></View>
+        <ProductsAndServices/>
     );
 }
