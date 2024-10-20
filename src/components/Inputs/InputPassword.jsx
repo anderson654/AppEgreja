@@ -1,5 +1,5 @@
 import React from "react";
-import { TextInput } from "react-native-paper";
+import { HelperText, TextInput } from "react-native-paper";
 import { formatWithMask, Masks } from 'react-native-mask-input';
 import { filterMaskText } from "../../utils/filterMaskedValue";
 import { maskPassword } from "../../utils/customMasks";
@@ -41,13 +41,18 @@ export default function InputPassword({ mode = 'flat', label = "none", onChangeT
     }
 
     return (
-        <TextInput
-            label={label}
-            value={inputIsVisible ? text : textObfuscate}
-            onChangeText={text => handleChange(text)}
-            mode={mode}
-            right={<TextInput.Icon onPress={handlerChangeIcon} forceTextInputFocus={false} icon={iconName} />}
-            error={error}
-        />
+        <>
+            <TextInput
+                label={label}
+                value={inputIsVisible ? text : textObfuscate}
+                onChangeText={text => handleChange(text)}
+                mode={mode}
+                right={<TextInput.Icon onPress={handlerChangeIcon} forceTextInputFocus={false} icon={iconName} />}
+                error={error}
+            />
+            <HelperText type="error" visible={!!error || error != ''}>
+                {error}
+            </HelperText>
+        </>
     );
 }

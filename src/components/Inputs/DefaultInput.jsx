@@ -3,16 +3,13 @@ import { HelperText, TextInput } from "react-native-paper";
 
 export default function DefaultInput({ mode = 'flat', label = 'E-mail', onChangeText, autoCorrect = false, mb = true, styles, icon = "", error }) {
 
-    const [text, setText] = React.useState("");
+    const [text, setText] = React.useState(""); //Esse useState deve sair daqui para ser recebido externamente;
 
     const handlerText = (text) => {
-
         setText(text);
-
         if (typeof onChangeText === 'function') {
             onChangeText(text);
         }
-
     }
 
     return (

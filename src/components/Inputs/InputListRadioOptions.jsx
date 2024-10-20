@@ -9,7 +9,7 @@ export default function InputListRadioOptions({ data, value, nameKey, valueKey, 
 
     const handlerText = (value) => {
         const itemSelected = getItemSelected(value);
-        setText(itemSelected.title);
+        setText(itemSelected[nameKey]);
         if (typeof onChangeObject === 'function') {
             onChangeObject(itemSelected);
         }
@@ -17,8 +17,8 @@ export default function InputListRadioOptions({ data, value, nameKey, valueKey, 
 
 
     function getItemSelected(value) {
-        const user = data.find(obj => obj.id === value);
-        return user;
+        const item = data.find(obj => obj[valueKey] === value);
+        return item;
     }
 
     return (
@@ -31,7 +31,7 @@ export default function InputListRadioOptions({ data, value, nameKey, valueKey, 
                     mode={mode}
                     style={{ ...styles }}
                     autoCorrect={autoCorrect}
-                    right={<TextInput.Icon onPress={() => { }} forceTextInputFocus={false} icon={icon} />}
+                    right={<TextInput.Icon onPress={() => setModal(true)} forceTextInputFocus={false} icon={icon} />}
                     error={error}
                     editable={false}
                     disabled={disabled}

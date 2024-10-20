@@ -81,15 +81,8 @@ export default function Login() {
                     <Space20 />
                     <Title>Bem vindo de volta! Que bom ver você aqui de novo!</Title>
                     <Space20 />
-                    <InputEmail label="E-mail" onChangeText={(text) => setEmail(text)} icon="email" error={!!validate?.email} />
-                    <HelperText type="error" visible={!!validate?.email}>
-                        {validate?.email}
-                    </HelperText>
-                    <Space20 />
-                    <InputPassword label="Senha" onChangeText={(text) => setPassword(text)} error={!!validate?.password} />
-                    <HelperText type="error" visible={!!validate?.password}>
-                        {validate?.password}
-                    </HelperText>
+                    <InputEmail label="E-mail" onChangeText={(text) => setEmail(text)} icon="email" error={validate?.email} />
+                    <InputPassword label="Senha" onChangeText={(text) => setPassword(text)} error={validate?.password} />
                     <View style={styles.containerLinkPassword}>
                         <Link onPress={() => navigation.navigate("LoginEmail")} color="#757575">Esqueceu a senha?</Link>
                     </View>

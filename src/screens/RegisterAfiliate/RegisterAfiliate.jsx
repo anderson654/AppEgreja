@@ -12,11 +12,17 @@ import validateNewOrganizationYup from "../../validations/yup/validateNewOrganiz
 import { setAlert } from "../../context/reducers/alertSnackBar";
 import InputPhone from "../../components/Inputs/InputPhone";
 import { createNewOrganization } from "../../apis/EgrejaApi/egreja";
+import InputCnpj from "../../components/Inputs/InputCnpj";
+import InputData from "../../components/Inputs/InputData";
+import InputListRadioOptions from "../../components/Inputs/InputListRadioOptions";
+import { estadosComMunicipios } from "../../constants/estados";
 
 export default function RegisterAfiliate() {
 
     const [validate, setValidate] = useState({});
     const [form, setForm] = useState({});
+    const [selectedEstado, setSelectedEstado] = useState(null);
+    const [selectedMunicipio, setSelectedMunicipio] = useState(null);
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
 
@@ -58,21 +64,27 @@ export default function RegisterAfiliate() {
         });
     }
 
+    function handlerSetState(obj){
+        setSelectedEstado(obj);
+        handlerSetForm(obj.sigla, 'state_registration');
+    }
+
     return (
         <KeyBoardView>
             <View style={{ padding: 20 }}>
-                <Title>Registre sua empresa?</Title>
+                <Title>Registre sua empresa!</Title>
                 <Space20 />
                 <Text variant="bodyLarge" style={{ color: "#757575" }}>Por que pedimos os dados da sua empresa?</Text>
+                <Space20 />
                 <DefaultInput label="Razão social" onChangeText={(text) => handlerSetForm(text, 'razao_social')} error={validate?.razao_social} />
                 <DefaultInput label="Nome fantasia" onChangeText={(text) => handlerSetForm(text, 'fantasy_name')} error={validate?.fantasy_name} />
-                <DefaultInput label="CNPJ" onChangeText={(text) => handlerSetForm(text, 'cnpj')} error={validate?.cnpj} />
+                <InputCnpj label="CNPJ" onChangeText={(text) => handlerSetForm(text, 'cnpj')} error={validate?.cnpj} />
                 <DefaultInput label="Titulo" onChangeText={(text) => handlerSetForm(text, 'title')} error={validate?.title} />
                 <DefaultInput label="CNAE" onChangeText={(text) => handlerSetForm(text, 'main_CNAE')} error={validate?.main_CNAE} />
-                <DefaultInput label="Estado" onChangeText={(text) => handlerSetForm(text, 'state_registration')} error={validate?.state_registration} />
-                <DefaultInput label="Municipio" onChangeText={(text) => handlerSetForm(text, 'municipal_registration')} error={validate?.municipal_registration} />
+                <InputListRadioOptions  nameKey='estado' valueKey='sigla' value={selectedEstado?.estado} data={estadosComMunicipios} label="Estado" onChangeObject={handlerSetState} error={validate?.state_registration} />
+                <InputListRadioOptions value={selectedMunicipio} label="Municipio" onChangeText={(text) => handlerSetForm(text, 'municipal_registration')} error={validate?.municipal_registration} disabled={true}/>
                 <InputEmail label="E-mail" onChangeText={(text) => handlerSetForm(text, 'email')} error={validate?.email} />
-                <DefaultInput label="Data de abertura" onChangeText={(text) => handlerSetForm(text, 'cnpj_opening_date')} error={validate?.cnpj_opening_date} />
+                <InputData label="Data de abertura" onChangeText={(text) => handlerSetForm(text, 'cnpj_opening_date')} error={validate?.cnpj_opening_date} />
                 <InputPhone label="Telefone" onChangeText={(text) => handlerSetForm(text, 'phone')} error={validate?.phone} />
                 <DefaultInput label="WebSite" onChangeText={(text) => handlerSetForm(text, 'website')} error={validate?.website} />
                 <DefaultInput label="Descrição" onChangeText={(text) => handlerSetForm(text, 'description')} error={validate?.description} />
