@@ -11,15 +11,16 @@ import DefaultInput from "../../../../components/Inputs/DefaultInput";
 import MenuSelectTypeService from "../../../../components/Menus/MenuSelectTypeService";
 import MenuSelectService from "../../../../components/Menus/MenuSelectService";
 import { Avatar } from "react-native-paper";
+import { setSelectCategory, setSelectedTypeService } from "../../../../context/reducers/home";
 
 export default function Inicial() {
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
     const routes = useNavigationState(state => state.routes);
-    const userIsLogued = useSelector(state => !!state.user.user)
-    
-    const [selectCategory, setSelectCategory] = useState();
+    const home = useSelector(state => state.home);
+    const userIsLogued = useSelector(state => !!state.user.user);
+
     const [layout, setLayout] = useState({ width: 0, height: 0 });
     // console.log(navigation.getParent().getParent().getState());
 
@@ -37,8 +38,12 @@ export default function Inicial() {
         dispatch(setMenuProfile(true));
     }
 
-    function handlerSelectCategories(data){
-        setSelectCategory(data);
+    function handlerSelectCategories(data) {
+        dispatch(setSelectCategory(data));
+    }
+    
+    function handlerSetTypeService(data){
+        dispatch(setSelectedTypeService(data));
     }
 
     return (
@@ -60,8 +65,10 @@ export default function Inicial() {
                             </View>
                         </View>
                     </View>
-                    <MenuSelectTypeService onPress={handlerSelectCategories}/>
-                    <MenuSelectService />
+                    <MenuSelectTypeService onPress={handlerSelectCategories} />
+                    {home?.selectedCategory &&
+                        <MenuSelectService onPress={handlerSetTypeService}/>
+                    }
                     <Space20 />
                 </View>
                 <View>

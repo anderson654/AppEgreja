@@ -1,29 +1,35 @@
 import React from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { Image, ScrollView, StyleSheet, View } from "react-native";
 import { Card, Text } from "react-native-paper";
 
 
-export default function MenuSelectService() {
+export default function MenuSelectService({ onPress }) {
 
-    const CardImage = ({ imageUri }) => (
+    const home = useSelector(state => state.home);
+
+    const CardImage = ({ imageUri, data }) => (
         <View>
-            <Card style={styles.containerCard}>
+            <Card style={styles.containerCard} onPress={() => handlerOnPress(data)}>
                 <Image style={styles.imageCard} resizeMode="contain" source={{ uri: imageUri }} />
             </Card>
-            <Text variant="labelSmall" style={styles.container}>Label Small</Text>
+            <Text variant="labelSmall" style={styles.container}>{data?.title}</Text>
         </View>
     )
 
+    const handlerOnPress = (data) => {
+        if (typeof onPress === 'function') {
+            onPress(data);
+        }
+    }
+
     return (
         <ScrollView showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 10 }} horizontal={true}>
-            <CardImage imageUri={'https://picsum.photos/701'} />
-            <CardImage imageUri={'https://picsum.photos/702'} />
-            <CardImage imageUri={'https://picsum.photos/703'} />
-            <CardImage imageUri={'https://picsum.photos/704'} />
-            <CardImage imageUri={'https://picsum.photos/705'} />
-            <CardImage imageUri={'https://picsum.photos/706'} />
-            <CardImage imageUri={'https://picsum.photos/707'} />
-            <CardImage imageUri={'https://picsum.photos/708'} />
+            {home?.selectedCategory?.service_types.map((data) => {
+                return (
+                    <CardImage key={data.id} data={data} imageUri={'https://picsum.photos/701'} />
+                );
+            }, [])}
         </ScrollView>
     );
 }

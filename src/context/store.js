@@ -6,6 +6,7 @@ import alertSnackBar from './reducers/alertSnackBar';
 import loginContext from './reducers/loginContext';
 import modals from './reducers/modals';
 import servicesAndCategories from './reducers/servicesAndCategories';
+import home from './reducers/home';
 
 const store = combineReducers({
   alertSnackBar,
@@ -14,7 +15,8 @@ const store = combineReducers({
   loginContext,
   user,
   modals,
-  servicesAndCategories
+  servicesAndCategories,
+  home
 });
 
 const rootReducer = (state, action) => {

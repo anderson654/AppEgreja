@@ -6,7 +6,6 @@ const menuHomeSlice = createSlice({
     initialState: {
         routeSelected: 'Home',
         subMenuIsOpen: false,
-        selectedCategory: null
     },
     reducers: {
         setRoute: (state, action) => {
@@ -15,11 +14,8 @@ const menuHomeSlice = createSlice({
         setSubMenu: (state, action) => {
             state.subMenuIsOpen = action.payload;
         },
-        setSelectCategory: (state, action) => {
-            state.selectedCategory = action.payload;
-        },
     },
 });
 
-export const { setRoute, setSubMenu, setSelectCategory } = menuHomeSlice.actions;
+export const { setRoute, setSubMenu } = menuHomeSlice.actions;
 export default menuHomeSlice.reducer;

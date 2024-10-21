@@ -5,13 +5,14 @@ import { Card, Avatar, Button, Icon, useTheme, Text } from "react-native-paper";
 import { Space10 } from "../SpacesLine/Spaces";
 import { getServiceCategories } from "../../apis/EgrejaApi/egreja";
 import { setCategories } from "../../context/reducers/servicesAndCategories";
-import { TouchableOpacity } from "react-native";
+import { setSelectCategory } from "../../context/reducers/home";
 
 
 export default function MenuSelectTypeService({ onPress }) {
 
     const dispatch = useDispatch();
     const servicesAndCategories = useSelector(state => state.servicesAndCategories);
+    const home = useSelector(state => state.home);
 
     async function fetchServices() {
         if (!servicesAndCategories.categories) {
@@ -19,6 +20,9 @@ export default function MenuSelectTypeService({ onPress }) {
                 try {
                     const response = await getServiceCategories();
                     dispatch(setCategories(response.data.categories));
+                    if(!home.selectedCategory){
+                        dispatch(setSelectCategory(response.data.categories[0]));
+                    }
                 } catch (error) {
                     console.log(error);
                 }

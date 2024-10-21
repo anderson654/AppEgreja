@@ -15,9 +15,9 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff",
-        "jsEngine": "hermes"
-      }
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.andersonbarbosa.AppEgreja"
     },
     "web": {
       "favicon": "./assets/favicon.png"
