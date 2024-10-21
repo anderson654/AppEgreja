@@ -15,9 +15,12 @@ import { Avatar } from "react-native-paper";
 export default function Inicial() {
     const navigation = useNavigation();
     const dispatch = useDispatch();
+
     const routes = useNavigationState(state => state.routes);
-    const [layout, setLayout] = useState({ width: 0, height: 0 });
     const userIsLogued = useSelector(state => !!state.user.user)
+    
+    const [selectCategory, setSelectCategory] = useState();
+    const [layout, setLayout] = useState({ width: 0, height: 0 });
     // console.log(navigation.getParent().getParent().getState());
 
     const handleLayoutSearch = (event) => {
@@ -32,6 +35,10 @@ export default function Inicial() {
             return;
         }
         dispatch(setMenuProfile(true));
+    }
+
+    function handlerSelectCategories(data){
+        setSelectCategory(data);
     }
 
     return (
@@ -53,7 +60,7 @@ export default function Inicial() {
                             </View>
                         </View>
                     </View>
-                    <MenuSelectTypeService />
+                    <MenuSelectTypeService onPress={handlerSelectCategories}/>
                     <MenuSelectService />
                     <Space20 />
                 </View>

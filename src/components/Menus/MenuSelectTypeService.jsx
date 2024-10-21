@@ -1,23 +1,46 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { ScrollView, View, StyleSheet } from "react-native";
 import { Card, Avatar, Button, Icon, useTheme, Text } from "react-native-paper";
 import { Space10 } from "../SpacesLine/Spaces";
+import { getServiceCategories } from "../../apis/EgrejaApi/egreja";
+import { setCategories } from "../../context/reducers/servicesAndCategories";
+import { TouchableOpacity } from "react-native";
 
 
-export default function MenuSelectTypeService() {
+export default function MenuSelectTypeService({ onPress }) {
+
+    const dispatch = useDispatch();
+    const servicesAndCategories = useSelector(state => state.servicesAndCategories);
+
+    async function fetchServices() {
+        if (!servicesAndCategories.categories) {
+            (async () => {
+                try {
+                    const response = await getServiceCategories();
+                    dispatch(setCategories(response.data.categories));
+                } catch (error) {
+                    console.log(error);
+                }
+            })();
+        }
+    }
+
+    useEffect(() => {
+        (async () => {
+            await fetchServices();
+        })()
+    }, []);
+
 
     const theme = useTheme();
 
     // theme.colors.elevation.level1
-
     const IconFood = props => <Avatar.Icon {...props} size={35} icon="food" />
-    const IconProducts = props => <Avatar.Icon {...props} size={35} icon="basket-plus" />
-    const IconService = props => <Avatar.Icon {...props} size={35} icon="brush-variant" />
-    const IconHome = props => <Avatar.Icon {...props} size={35} icon="home-city-outline" />
     // brush-variant
 
-    const MyComponent = ({ icon, title = "title" }) => (
-        <Card style={styles.card}>
+    const MyComponent = ({ icon, title = "title", data }) => (
+        <Card style={styles.card} onPress={() => handlerOnPress(data)}>
             <Card.Content style={styles.cardContent}>
                 {icon || <IconFood />}
                 <Space10 />
@@ -26,12 +49,22 @@ export default function MenuSelectTypeService() {
         </Card>
     );
 
-    return (
+
+    const handlerOnPress = (data) => {
+        if (typeof onPress === 'function') {
+            onPress(data);
+        }
+    }
+
+    return (servicesAndCategories?.categories &&
         <ScrollView showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 10 }} horizontal={true}>
-            <MyComponent icon={<IconFood />} title="Alimentação"/>
-            <MyComponent icon={<IconProducts />} title="Produtos"/>
-            <MyComponent icon={<IconService />} title="Serviços"/>
-            <MyComponent icon={<IconHome />} title="imóveis"/>
+            {
+                servicesAndCategories.categories.map((data) => {
+                    return (
+                        <MyComponent key={data.id} icon={<IconFood />} title={data.title} data={data} />
+                    )
+                })
+            }
         </ScrollView>
     );
 }
