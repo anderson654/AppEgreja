@@ -73,7 +73,7 @@ export default function MenuProfile() {
                         <Text variant="titleLarge" style={{ fontFamily: 'Poppins_600SemiBold' }}>Anderson Gabriel</Text>
                     </View>
                 </View>
-                <LineItemMenu title={'Comece a vender'} subTitle={'Crie seu próprio estabelecimento online'} icon="storefront-outline" onPress={() => { closeMenu(), navigation.navigate('StackAfiliate') }} />
+                <LineItemMenu title={'Comece a vender'} subTitle={'Crie seu próprio estabelecimento online'} icon="storefront-outline" onPress={() => { closeMenu(), navigation.navigate('HomeOrganization') }} />
                 <LineItemMenu title={'Meus Dados'} subTitle={'Mais informaçoes de conta'} icon="square-edit-outline" />
                 <LineItemMenu title={'Meu Perfil'} subTitle={'Minhas informações do perfil'} icon="account-circle-outline" />
                 <LineItemMenu title={'Meus Anúncios'} subTitle={'Meus anúncios avulsos'} icon="message-text-clock-outline" />

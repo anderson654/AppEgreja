@@ -25,7 +25,7 @@ export default function MenuSelectService({ onPress }) {
 
     return (
         <ScrollView showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 10 }} horizontal={true}>
-            {home?.selectedCategory?.service_types.map((data) => {
+            {home?.selectedCategory?.c_service_types.map((data) => {
                 return (
                     <CardImage key={data.id} data={data} imageUri={'https://picsum.photos/701'} />
                 );

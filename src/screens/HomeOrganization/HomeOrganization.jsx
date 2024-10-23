@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from "../../context/reducers/modals";
-import ProductsAndServices from "../ProductsAndServices/ProductsAndServices";
+// import ProductsAndServices from "../ProductsAndServices/ProductsAndServices";
+import HomeStore from "../HomeStore/HomeStore";
 
 export default function HomeOrganization() {
     const dispatch = useDispatch();
@@ -14,6 +15,7 @@ export default function HomeOrganization() {
     }, []);
 
     return (
-        <ProductsAndServices/>
+        <HomeStore />
+        // <ProductsAndServices/>
     );
 }

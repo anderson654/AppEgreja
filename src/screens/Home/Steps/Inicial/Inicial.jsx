@@ -10,8 +10,10 @@ import { Space20 } from "../../../../components/SpacesLine/Spaces";
 import DefaultInput from "../../../../components/Inputs/DefaultInput";
 import MenuSelectTypeService from "../../../../components/Menus/MenuSelectTypeService";
 import MenuSelectService from "../../../../components/Menus/MenuSelectService";
-import { Avatar } from "react-native-paper";
+import { Avatar, Card } from "react-native-paper";
 import { setSelectCategory, setSelectedTypeService } from "../../../../context/reducers/home";
+import KeyBoardView from "../../../../components/Views/KeyBoardView";
+import ListServicesAndProductsHome from "../../../../components/FlatLists/ListServicesAndProductsHome/ListServicesAndProductsHome";
 
 export default function Inicial() {
     const navigation = useNavigation();
@@ -41,8 +43,8 @@ export default function Inicial() {
     function handlerSelectCategories(data) {
         dispatch(setSelectCategory(data));
     }
-    
-    function handlerSetTypeService(data){
+
+    function handlerSetTypeService(data) {
         dispatch(setSelectedTypeService(data));
     }
 
@@ -55,33 +57,33 @@ export default function Inicial() {
                 </View>
                 <Space20 />
             </View>
-            <ScrollView style={styles.container}>
+            <View style={styles.container}>
                 <View style={styles.contentContainer}>
-                    <View style={styles.containerPadding}>
+                    {/* <View style={styles.containerPadding}>
                         <View style={styles.containerTitle}>
                             <Title>Olá, <Title fontFamily={'Poppins_700Bold'}>Gabriel{'\n'}</Title>Vai do que hoje?</Title>
                             <View style={styles.containerIcon}>
                                 <Avatar.Icon size={60} icon="plus" style={{ backgroundColor: "#f7f8f9" }} />
                             </View>
                         </View>
-                    </View>
+                    </View> */}
                     <MenuSelectTypeService onPress={handlerSelectCategories} />
                     {home?.selectedCategory &&
-                        <MenuSelectService onPress={handlerSetTypeService}/>
+                        <MenuSelectService onPress={handlerSetTypeService} />
                     }
                     <Space20 />
                 </View>
-                <View>
-                    {/* body */}
-                </View>
-            </ScrollView>
+            </View>
+            <View style={{ flex: 1 }}>
+                <ListServicesAndProductsHome />
+            </View>
         </>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        // flex: 1,
         // backgroundColor: "#fff"
     },
     contentContainer: {

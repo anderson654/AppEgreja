@@ -80,8 +80,18 @@ export async function createNewProductAndService(data) {
     return response;
 }
 
-export async function getServiceCategories(data) {
-    const response = await axios.get('/empreende/services/categories', data);
+export async function getServiceCategories() {
+    const response = await axios.get('/empreende/services/categories');
+    return response;
+}
+
+export async function getMyServices() {
+    const response = await axios.get('/empreende/services/getServices');
+    return response;
+}
+
+export async function getServicesToCategoryAndType(categoryId, typeId) {
+    const response = await axios.get(`/empreende/services/getServicesToCategoryAndType/${categoryId}/${typeId}`);
     return response;
 }
 

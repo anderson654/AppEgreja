@@ -15,6 +15,7 @@ import InputPrice from "../../components/Inputs/InputPrice";
 import InputListRadioOptions from "../../components/Inputs/InputListRadioOptions";
 import { getServiceCategories } from "../../apis/EgrejaApi/egreja";
 import { setCategories } from "../../context/reducers/servicesAndCategories";
+import { setServicesCategoryAndType } from "../../context/reducers/cacheServices";
 
 export default function ProductsAndServices() {
 
@@ -25,6 +26,7 @@ export default function ProductsAndServices() {
     const [loading, setLoading] = useState(false);
     const organization = useSelector(state => state.user.user.organization);
     const servicesAndCategories = useSelector(state => state.servicesAndCategories);
+    const cacheServices = useSelector(state => state.cacheServices);
     const dispatch = useDispatch();
     const navigation = useNavigation();
 
@@ -48,7 +50,9 @@ export default function ProductsAndServices() {
             if (errors) {
                 throw new Error("Complete os dados.")
             }
+
             const response = await createNewProductAndService(form);
+            handlerSetCacheServices(response.data.service);
 
             dispatch(setAlert({
                 text: "Registrado com sucesso.",
@@ -79,22 +83,42 @@ export default function ProductsAndServices() {
             organization_id: organization.id,
             [inputName]: value
         });
+
+        return {
+            ...form,
+            organization_id: organization.id,
+            [inputName]: value
+        };
     }
 
-    function handlerSetCategory(obj){
-        handlerSetForm(obj.id, 'category_id');
+    function handlerSetCategory(obj) {
+        const newForm = handlerSetForm(obj.id, 'category_id');
         setSelectedCategory(obj);
-        setNullTypeServices();
+        setNullTypeServices(newForm);
     }
 
-    function handlerOnChangeTypeService(obj){
+    function handlerOnChangeTypeService(obj) {
         handlerSetForm(obj.id, 'type_id');
         setSelectedTypeService(obj);
     }
 
-    function setNullTypeServices(){
-        handlerSetForm(null, 'type_id');
+    function setNullTypeServices(form) {
+        setForm({ ...form, type_id: null })
         setSelectedTypeService(null);
+    }
+
+    function handlerSetCacheServices(newService) {
+        const services = cacheServices.servicesCategoryAndType[`CategoryId${form.category_id}TypeId${form.type_id}`];
+        dispatch(setServicesCategoryAndType({
+            categoryId: form.category_id,
+            typeId: form.type_id,
+            data: [
+                newService,
+                ...services
+            ]
+        }));
+        console.log(cacheServices.servicesCategoryAndType);
+
     }
 
     return (
@@ -115,7 +139,7 @@ export default function ProductsAndServices() {
                     </View>
                 </View>
                 <InputListRadioOptions value={selectedCategory?.title} nameKey='title' valueKey='id' data={servicesAndCategories.categories} label="Categoria do serviço" onChangeObject={handlerSetCategory} error={validate?.category_id} />
-                <InputListRadioOptions value={selectedTypeService?.title} nameKey='title' valueKey='id' data={selectedCategory?.service_types} label="Tipo do serviço" onChangeObject={handlerOnChangeTypeService} error={validate?.type_id} disabled={!selectedCategory}/>
+                <InputListRadioOptions value={selectedTypeService?.title} nameKey='title' valueKey='id' data={selectedCategory?.c_service_types} label="Tipo do serviço" onChangeObject={handlerOnChangeTypeService} error={validate?.type_id} disabled={!selectedCategory} />
                 <DefaultInput label="Descrição" onChangeText={(text) => handlerSetForm(text, 'description')} error={validate?.description} />
                 <Space20 />
                 <DefaultButton title="Continuar" onPress={handlerSaveProductsAndService} loading={loading} />

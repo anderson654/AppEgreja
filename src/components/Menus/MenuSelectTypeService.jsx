@@ -40,13 +40,13 @@ export default function MenuSelectTypeService({ onPress }) {
     const theme = useTheme();
 
     // theme.colors.elevation.level1
-    const IconFood = props => <Avatar.Icon {...props} size={35} icon="food" />
+    // const IconFood = props => <Avatar.Icon {...props} size={35} icon="food" />
     // brush-variant
 
     const MyComponent = ({ icon, title = "title", data }) => (
         <Card style={styles.card} onPress={() => handlerOnPress(data)}>
             <Card.Content style={styles.cardContent}>
-                {icon || <IconFood />}
+                <Avatar.Icon size={35} icon={'food'} />
                 <Space10 />
                 <Text variant="labelSmall">{title}</Text>
             </Card.Content>
@@ -65,7 +65,7 @@ export default function MenuSelectTypeService({ onPress }) {
             {
                 servicesAndCategories.categories.map((data) => {
                     return (
-                        <MyComponent key={data.id} icon={<IconFood />} title={data.title} data={data} />
+                        <MyComponent key={data.id} icon={data.icon} title={data.title} data={data} />
                     )
                 })
             }
