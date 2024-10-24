@@ -8,16 +8,18 @@ import { getServicesToCategoryAndType } from "../../../apis/EgrejaApi/egreja";
 import { setServicesCategoryAndType } from "../../../context/reducers/cacheServices";
 import TextPoppins from "../../Typograph/TextPoppins";
 import { formatToBRL } from "../../../utils/formatValues";
+import { setCategories } from "../../../context/reducers/servicesAndCategories";
+import { mergeArrays } from "../../../utils/arraysManipulate";
 
 
 export default function FlatItendServicesAndProducts({ data }) {
 
+    // console.log(data);
 
     const [services, setServices] = useState(null);
     const [loading, setLoading] = useState(false);
-    const servicesCategoryAndType = useSelector(state => state.cacheServices.servicesCategoryAndType);
+    const servicesCategoryAndType = useSelector(state => state.cacheServices.servicesCategoryAndType[`CategoryId${data.category_id}TypeId${data.id}`]);
     const dispatch = useDispatch();
-
 
     // useEffect(() => {
     //     (async () => {
@@ -40,27 +42,45 @@ export default function FlatItendServicesAndProducts({ data }) {
     //         }
     //     })();
     // }, []);
-    function handlerSetSericesInContext() {
+
+    function handlerSetSericesInContext(arrayServices) {
+        const serices = arrayServices || servicesCategoryAndType || data.services;
+
         dispatch(setServicesCategoryAndType({
             categoryId: data.category_id,
             typeId: data.id,
-            data: getServicesByCategoryAndTypeContext() || data.services
+            data: serices
         }));
+
+        setServices(serices);
     }
 
-    function getServicesByCategoryAndTypeContext() {
-        const services = servicesCategoryAndType[`CategoryId${data.category_id}TypeId${data.id}`];
-        return services;
+    async function getSericesNextPage() {
+        if (servicesCategoryAndType.current_page === servicesCategoryAndType.last_page) {
+            return;
+        }
+        (async () => {
+            try {
+                const response = await getServicesToCategoryAndType(data.category_id, data.id, servicesCategoryAndType.current_page + 1);
+
+                const currentArraySerices = servicesCategoryAndType.data;
+                const requestArrayServices = response.data.services.data;
+
+                const newObjectServices = {
+                    ...response.data.services,
+                    data: mergeArrays(currentArraySerices, requestArrayServices),
+                }
+
+                handlerSetSericesInContext(newObjectServices);
+
+            } catch (error) {
+                console.log(error);
+            }
+        })();
     }
 
     useEffect(() => {
         handlerSetSericesInContext();
-    }, []);
-
-
-    useEffect(() => {
-        const services = getServicesByCategoryAndTypeContext();
-        setServices(services);
     }, [servicesCategoryAndType]);
 
     const Item = ({ data: { item } }) => {
@@ -88,19 +108,21 @@ export default function FlatItendServicesAndProducts({ data }) {
     };
 
     return (
-        !!services?.length &&
+        !!services?.data?.length &&
 
         <>
             <View style={{ paddingHorizontal: 20 }}>
                 <TextPoppins fontWeight={600}>{data?.title}</TextPoppins>
             </View>
             <FlatList
-                data={services}
+                data={services.data}
                 renderItem={(data) => <Item data={data} />}
                 keyExtractor={item => item.id}
                 // style={{ paddingBottom: 40 }}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
+                onEndReachedThreshold={0.6}
+                onEndReached={getSericesNextPage}
             />
         </>
     );

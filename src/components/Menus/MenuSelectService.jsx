@@ -7,6 +7,8 @@ import { Card, Text } from "react-native-paper";
 export default function MenuSelectService({ onPress }) {
 
     const home = useSelector(state => state.home);
+    console.log(home);
+    
 
     const CardImage = ({ imageUri, data }) => (
         <View>

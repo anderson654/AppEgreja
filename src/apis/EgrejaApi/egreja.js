@@ -80,6 +80,11 @@ export async function createNewProductAndService(data) {
     return response;
 }
 
+export async function updateNewProductAndService(data) {
+    const response = await axios.post('/empreende/services/update', data);
+    return response;
+}
+
 export async function getServiceCategories() {
     const response = await axios.get('/empreende/services/categories');
     return response;
@@ -90,8 +95,8 @@ export async function getMyServices() {
     return response;
 }
 
-export async function getServicesToCategoryAndType(categoryId, typeId) {
-    const response = await axios.get(`/empreende/services/getServicesToCategoryAndType/${categoryId}/${typeId}`);
+export async function getServicesToCategoryAndType(categoryId, typeId, page) {
+    const response = await axios.get(`/empreende/services/getServicesToCategoryAndType/${categoryId}/${typeId}?page=${page}`);
     return response;
 }
 

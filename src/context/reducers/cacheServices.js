@@ -11,7 +11,6 @@ const cacheServices = createSlice({
             state.servicesCategoryAndType = {
                 ...state.servicesCategoryAndType,
                 [`CategoryId${action.payload.categoryId}TypeId${action.payload.typeId}`]: action.payload.data
-
             };
         },
     },

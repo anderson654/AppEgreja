@@ -5,7 +5,7 @@ import { filterMaskText } from "../../utils/filterMaskedValue";
 import { maskPhone } from "../../utils/customMasks";
 import { ajustValueReturn } from "../../utils/ajustValuePrice";
 
-export default function InputPrice({ mode = 'flat', label = "none", onChangeText, error, initialValue = "", icon = 'cash' }) {
+export default function InputPrice({ mode = 'flat', label = "none", onChangeText, error, initialValue = null, icon = 'cash' }) {
 
     const [text, setText] = React.useState(initialValue);
 

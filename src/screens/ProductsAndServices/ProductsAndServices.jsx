@@ -10,14 +10,17 @@ import DefaultButton from "../../components/Buttons/DefaultButton";
 import { useNavigation } from "@react-navigation/native";
 import productsAndServicesYup from "../../validations/yup/productsAndServicesYup";
 import { setAlert } from "../../context/reducers/alertSnackBar";
-import { createNewProductAndService } from "../../apis/EgrejaApi/egreja";
+import { createNewProductAndService, updateNewProductAndService } from "../../apis/EgrejaApi/egreja";
 import InputPrice from "../../components/Inputs/InputPrice";
 import InputListRadioOptions from "../../components/Inputs/InputListRadioOptions";
 import { getServiceCategories } from "../../apis/EgrejaApi/egreja";
 import { setCategories } from "../../context/reducers/servicesAndCategories";
 import { setServicesCategoryAndType } from "../../context/reducers/cacheServices";
+import { mergeArrays } from "../../utils/arraysManipulate";
+import { pasTitle, pasBtnTitle, updateItemInArray } from "../../utils/productAndServicesUtils";
+import { formatToBRL } from "../../utils/formatValues";
 
-export default function ProductsAndServices() {
+export default function ProductsAndServices({ route: { params } }) {
 
     const [validate, setValidate] = useState({});
     const [form, setForm] = useState({});
@@ -43,7 +46,42 @@ export default function ProductsAndServices() {
         }
     }, []);
 
+    useEffect(() => {
+        if (params?.action === 'PUT') {
+            const categorias = servicesAndCategories.categories;
+            const { category_id, type_id } = params.data;
+            const findCategory = categorias.find(objeto => objeto.id === category_id);
+            const findTypeService = findCategory.c_service_types.find(objeto => objeto.id === type_id);
+            handlerSetCategory(findCategory);
+            handlerOnChangeTypeService(findTypeService);
+            setInitUpdateForm(params.data);
+        }
+    }, [params?.data]);
+
     async function handlerSaveProductsAndService() {
+        if (params?.action === 'PUT') {
+            await update();
+            return;
+        }
+        await save();
+    }
+
+    function setInitUpdateForm(obj) {
+        setForm({
+            ...form,
+            id: obj.id,
+            organization_id: organization.id,
+            title: obj.title,
+            price: obj.price,
+            discount: obj.discount,
+            category_id: obj.category_id,
+            type_id: obj.type_id,
+            description: obj.description
+        });
+    }
+
+
+    async function save() {
         try {
             setLoading(true);
             const errors = await hasErrors();
@@ -70,9 +108,37 @@ export default function ProductsAndServices() {
         }
     }
 
+    async function update() {
+        try {
+            setLoading(true);
+            const errors = await hasErrors();
+            if (errors) {
+                throw new Error("Complete os dados.")
+            }
+
+            const response = await updateNewProductAndService(form);
+            handlerUpdateServiceInCache(response.data.service);
+
+            dispatch(setAlert({
+                text: "Registrado com sucesso.",
+                type: "sucess"
+            }));
+
+        } catch (error) {
+            dispatch(setAlert({
+                text: error?.message || "Erro ao criar organização.",
+                type: "error"
+            }));
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
 
     const hasErrors = async () => {
         const validate = await productsAndServicesYup(form);
+        console.log(validate);
         setValidate(validate);
         return validate !== null;
     };
@@ -108,17 +174,32 @@ export default function ProductsAndServices() {
     }
 
     function handlerSetCacheServices(newService) {
-        const services = cacheServices.servicesCategoryAndType[`CategoryId${form.category_id}TypeId${form.type_id}`];
+
+        const objectSerices = cacheServices.servicesCategoryAndType[`CategoryId${form.category_id}TypeId${form.type_id}`];
+
         dispatch(setServicesCategoryAndType({
             categoryId: form.category_id,
             typeId: form.type_id,
-            data: [
-                newService,
-                ...services
-            ]
+            data: {
+                ...objectSerices,
+                current_page: 1,
+                data: [newService, ...objectSerices.data.slice(0, 4)]
+            }
         }));
-        console.log(cacheServices.servicesCategoryAndType);
+    }
 
+    function handlerUpdateServiceInCache(updateService) {
+        const objectSerices = cacheServices.servicesCategoryAndType[`CategoryId${form.category_id}TypeId${form.type_id}`];
+        const newArrayItens = updateItemInArray(updateService, objectSerices.data.slice(0, 5));
+        dispatch(setServicesCategoryAndType({
+            categoryId: form.category_id,
+            typeId: form.type_id,
+            data: {
+                ...objectSerices,
+                current_page: 1,
+                data: newArrayItens
+            }
+        }));
     }
 
     return (
@@ -127,22 +208,24 @@ export default function ProductsAndServices() {
             <KeyBoardView>
                 <ArrowBack onPress={() => navigation.goBack()} />
                 <Space20 />
-                <Title>Registre um serviço ou produto.</Title>
+                <Title>{pasTitle(params?.action)}</Title>
                 <Space20 />
-                <DefaultInput label="Titulo" onChangeText={(text) => handlerSetForm(text, 'title')} error={validate?.title} />
+                <DefaultInput initialValue={params?.data?.title} label="Titulo" onChangeText={(text) => handlerSetForm(text, 'title')} error={validate?.title} />
                 <View style={{ flexDirection: "row", flex: 1 }}>
                     <View style={{ flex: 1, marginEnd: 10 }} >
-                        <InputPrice label="Valor" onChangeText={(text) => handlerSetForm(text, 'price')} error={validate?.price} />
+                        <InputPrice initialValue={params?.data?.price && formatToBRL(params?.data?.price)} label="Valor" onChangeText={(text) => handlerSetForm(text, 'price')} error={validate?.price} />
                     </View>
                     <View style={{ flex: 1, marginStart: 10 }}>
-                        <InputPrice label="Desconto" onChangeText={(text) => handlerSetForm(text, 'discount')} error={validate?.discount} icon={'cash-minus'} />
+                        <InputPrice initialValue={params?.data?.discount && formatToBRL(params?.data?.discount)} label="Desconto" onChangeText={(text) => handlerSetForm(text, 'discount')} error={validate?.discount} icon={'cash-minus'} />
                     </View>
                 </View>
-                <InputListRadioOptions value={selectedCategory?.title} nameKey='title' valueKey='id' data={servicesAndCategories.categories} label="Categoria do serviço" onChangeObject={handlerSetCategory} error={validate?.category_id} />
-                <InputListRadioOptions value={selectedTypeService?.title} nameKey='title' valueKey='id' data={selectedCategory?.c_service_types} label="Tipo do serviço" onChangeObject={handlerOnChangeTypeService} error={validate?.type_id} disabled={!selectedCategory} />
-                <DefaultInput label="Descrição" onChangeText={(text) => handlerSetForm(text, 'description')} error={validate?.description} />
+
+                <InputListRadioOptions value={selectedCategory?.title} nameKey='title' valueKey='id' data={servicesAndCategories.categories} label="Categoria do serviço" onChangeObject={handlerSetCategory} error={validate?.category_id} disabled={params?.action == 'PUT'} />
+                <InputListRadioOptions value={selectedTypeService?.title} nameKey='title' valueKey='id' data={selectedCategory?.c_service_types} label="Tipo do serviço" onChangeObject={handlerOnChangeTypeService} error={validate?.type_id} disabled={!selectedCategory || params?.action == 'PUT'} />
+
+                <DefaultInput initialValue={params?.data?.description} label="Descrição" onChangeText={(text) => handlerSetForm(text, 'description')} error={validate?.description} />
                 <Space20 />
-                <DefaultButton title="Continuar" onPress={handlerSaveProductsAndService} loading={loading} />
+                <DefaultButton title={pasBtnTitle(params?.action)} onPress={handlerSaveProductsAndService} loading={loading} />
                 <Space20 />
                 <Space20 />
             </KeyBoardView>

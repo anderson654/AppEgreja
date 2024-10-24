@@ -10,39 +10,36 @@ import { getMyServices } from "../../apis/EgrejaApi/egreja";
 import TextPoppins from "../../components/Typograph/TextPoppins";
 import { formatToBRL } from "../../utils/formatValues";
 // import CText from "../../components/Typograph/CText";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function ShowServicesAndProducts() {
 
     const [services, setServices] = useState([]);
-
     const navigation = useNavigation();
+    const isFocus = useIsFocused();
 
     useEffect(() => {
-        (async () => {
-
-            try {
-                const response = await getMyServices();
-                setServices(response.data.services);
-            } catch (error) {
-                console.log(error);
-            }
-
-        })()
-    }, []);
+        if(isFocus){
+            (async () => {
+                try {
+                    const response = await getMyServices();
+                    setServices(response.data.services.data);
+                } catch (error) {
+                    console.log(error);
+                }
+            })()
+        }
+    }, [isFocus]);
 
 
     const CustomCard = ({ data }) => {
-
-        console.log(data);
-
         return (
-
-            <Card style={{ backgroundColor: "#fff", marginBottom: 20 }} elevation={1}>
+            <Card style={{ backgroundColor: "#fff", marginBottom: 20 }} elevation={1} onPress={() => navigation.navigate('ProductsAndServices', { action: 'PUT', data: data })}>
                 <View style={{ flex: 1, flexDirection: 'row' }}>
                     <View style={{ padding: 10 }}>
                         <Card.Cover source={{ uri: 'https://picsum.photos/700' }} style={{ width: 100, height: 120 }} />
                     </View>
-                    <View style={{ padding: 20, justifyContent:"space-between" }}>
+                    <View style={{ padding: 20, justifyContent: "space-between" }}>
                         <View>
                             <TextPoppins variant="titleMedium" fontWeight={700}>{data?.title}</TextPoppins>
                             <TextPoppins>{data?.description}</TextPoppins>
@@ -54,7 +51,6 @@ export default function ShowServicesAndProducts() {
                     </View>
                 </View>
             </Card>
-
         )
     }
 
