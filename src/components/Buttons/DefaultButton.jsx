@@ -28,7 +28,8 @@ export default function DefaultButton({ mb = false, mode = 'contained', title = 
 
 const styles = StyleSheet.create({
     container: {
-        borderRadius: 8,
+        // borderRadius: 8,
+        borderRadius: 40,
     },
     contentContainer: {
         height: 60
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins_600SemiBold'
     },
     surfaceStyle: {
-        borderRadius: 8,
+        borderRadius: 40,
     },
     disabledBtn: {
         backgroundColor: "#fff"

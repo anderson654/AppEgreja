@@ -100,6 +100,11 @@ export async function getServicesToCategoryAndType(categoryId, typeId, page) {
     return response;
 }
 
+export async function createLead(data) {
+    const response = await axios.post('/empreende/services/lead', data);
+    return response;
+}
+
 
 
 

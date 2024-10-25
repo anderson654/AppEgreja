@@ -10,6 +10,7 @@ import TextPoppins from "../../Typograph/TextPoppins";
 import { formatToBRL } from "../../../utils/formatValues";
 import { setCategories } from "../../../context/reducers/servicesAndCategories";
 import { mergeArrays } from "../../../utils/arraysManipulate";
+import { useNavigation } from "@react-navigation/native";
 
 
 export default function FlatItendServicesAndProducts({ data }) {
@@ -18,6 +19,7 @@ export default function FlatItendServicesAndProducts({ data }) {
 
     const [services, setServices] = useState(null);
     const [loading, setLoading] = useState(false);
+    const navigation = useNavigation();
     const servicesCategoryAndType = useSelector(state => state.cacheServices.servicesCategoryAndType[`CategoryId${data.category_id}TypeId${data.id}`]);
     const dispatch = useDispatch();
 
@@ -87,7 +89,7 @@ export default function FlatItendServicesAndProducts({ data }) {
 
         return (
             <View style={{ padding: 20, width: 300 }}>
-                <Card style={{ position: 'relative', overflow: 'hidden' }}>
+                <Card style={{ position: 'relative', overflow: 'hidden' }} onPress={() => navigation.navigate('ShowIndividualProduct', { product: item })} elevation={0}>
                     <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
                     <View style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0 }}>
                         <View style={{ flex: 1 }}>
