@@ -44,7 +44,7 @@ export default function MenuSelectTypeService({ onPress }) {
     // brush-variant
 
     const MyComponent = ({ icon, title = "title", data }) => (
-        <Card style={styles.card} onPress={() => handlerOnPress(data)}>
+        <Card style={styles.card} onPress={() => handlerOnPress(data)} elevation={0}>
             <Card.Content style={styles.cardContent}>
                 <Avatar.Icon size={35} icon={'food'} />
                 <Space10 />

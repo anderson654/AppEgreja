@@ -8,7 +8,7 @@ const whiteTheme = {
         "onSecondary": "rgb(255, 255, 255)",
         "secondaryContainer": "rgb(237, 221, 246)",
         "onSecondaryContainer": "rgb(33, 24, 42)",
-        "tertiary": "rgb(128, 81, 88)",
+        "tertiary": "rgb(87, 87, 87)",
         "onTertiary": "rgb(255, 255, 255)",
         "tertiaryContainer": "rgb(255, 217, 221)",
         "onTertiaryContainer": "rgb(50, 16, 23)",

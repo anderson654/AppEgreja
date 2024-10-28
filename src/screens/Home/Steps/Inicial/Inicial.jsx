@@ -14,6 +14,28 @@ import { Avatar, Card } from "react-native-paper";
 import { setSelectCategory, setSelectedTypeService } from "../../../../context/reducers/home";
 import KeyBoardView from "../../../../components/Views/KeyBoardView";
 import ListServicesAndProductsHome from "../../../../components/FlatLists/ListServicesAndProductsHome/ListServicesAndProductsHome";
+import SlidPromotions from "../../../../components/FlatLists/SlidPromotions/SlidPromotions";
+import TextPoppins from "../../../../components/Typograph/TextPoppins";
+
+
+const teste = [
+    {
+        id: 1,
+        image: 'https://picsum.photos/700'
+    },
+    {
+        id: 2,
+        image: 'https://picsum.photos/701'
+    },
+    {
+        id: 3,
+        image: 'https://picsum.photos/702'
+    },
+    {
+        id: 4,
+        image: 'https://picsum.photos/703'
+    },
+]
 
 export default function Inicial() {
     const navigation = useNavigation();
@@ -51,13 +73,17 @@ export default function Inicial() {
     return (
         <>
             <View style={styles.containerSearch} onLayout={handleLayoutSearch}>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View style={{ flexDirection: "row", alignItems: "center", paddingVertical: 10 }}>
                     <ButtonIconSurface onPress={handlerOpenMenuLeft} />
-                    <DefaultInput styles={styles.customStyleInputSearch} mode="outlined" label="Pesquisar um item ou comercio." />
+                    <DefaultInput styles={styles.customStyleInputSearch} mode="outlined" label="Pesquisar um serviço ou produto" icon="text-search" />
                 </View>
                 <Space20 />
             </View>
             <View style={styles.container}>
+                <View style={{ padding: 20, paddingBottom: 0 }}>
+                    <TextPoppins variant={'titleLarge'} fontWeight={700}>Anúncio</TextPoppins>
+                </View>
+                <SlidPromotions itens={teste} />
                 <View style={styles.contentContainer}>
                     {/* <View style={styles.containerPadding}>
                         <View style={styles.containerTitle}>
@@ -67,11 +93,14 @@ export default function Inicial() {
                             </View>
                         </View>
                     </View> */}
+                    <View style={{ padding: 20, paddingBottom: 20 }}>
+                        <TextPoppins variant={'titleLarge'} fontWeight={700}>Categoria</TextPoppins>
+                    </View>
                     <MenuSelectTypeService onPress={handlerSelectCategories} />
-                    {home?.selectedCategory &&
+                    {/* {home?.selectedCategory &&
                         <MenuSelectService onPress={handlerSetTypeService} />
-                    }
-                    <Space20 />
+                    } */}
+                    {/* <Space20 /> */}
                 </View>
             </View>
             <View style={{ flex: 1 }}>
@@ -88,9 +117,9 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         // padding: 20,
-        backgroundColor: "#fff",
-        borderBottomLeftRadius: 30,
-        borderBottomRightRadius: 30
+        // backgroundColor: "#fff",
+        // borderBottomLeftRadius: 30,
+        // borderBottomRightRadius: 30
     },
     containerPadding: {
         padding: 20
@@ -107,6 +136,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingHorizontal: 20,
         backgroundColor: "#FFF",
+        borderBottomLeftRadius: 30,
+        borderBottomRightRadius: 30
     },
     customStyleInputSearch: {
         marginBottom: 0,
