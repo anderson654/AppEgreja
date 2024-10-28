@@ -8,6 +8,7 @@ import modals from './reducers/modals';
 import servicesAndCategories from './reducers/servicesAndCategories';
 import home from './reducers/home';
 import cacheServices from './reducers/cacheServices';
+import defaultConsts from './reducers/defaultConsts';
 
 const store = combineReducers({
   alertSnackBar,
@@ -18,7 +19,8 @@ const store = combineReducers({
   modals,
   servicesAndCategories,
   home,
-  cacheServices
+  cacheServices,
+  defaultConsts
 });
 
 const rootReducer = (state, action) => {

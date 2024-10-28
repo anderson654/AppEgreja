@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { View } from "react-native";
 import DefaultInput from "../../components/Inputs/DefaultInput";
@@ -11,19 +11,21 @@ import DefaultButton from "../../components/Buttons/DefaultButton";
 import validateNewOrganizationYup from "../../validations/yup/validateNewOrganizationYup";
 import { setAlert } from "../../context/reducers/alertSnackBar";
 import InputPhone from "../../components/Inputs/InputPhone";
-import { createNewOrganization } from "../../apis/EgrejaApi/egreja";
+import { createNewOrganization, getStates, getStateAndCities } from "../../apis/EgrejaApi/egreja";
 import InputCnpj from "../../components/Inputs/InputCnpj";
 import InputData from "../../components/Inputs/InputData";
 import InputListRadioOptions from "../../components/Inputs/InputListRadioOptions";
 import { estadosComMunicipios } from "../../constants/estados";
+import { setStates, setCities } from "../../context/reducers/defaultConsts";
 
 export default function RegisterAfiliate() {
 
     const [validate, setValidate] = useState({});
     const [form, setForm] = useState({});
     const [selectedEstado, setSelectedEstado] = useState(null);
-    const [selectedMunicipio, setSelectedMunicipio] = useState(null);
+    const [city, setCity] = useState(null);
     const [loading, setLoading] = useState(false);
+    const defaultConsts = useSelector(state => state.defaultConsts);
     const dispatch = useDispatch();
 
     async function handlerNewOrganization() {
@@ -64,11 +66,44 @@ export default function RegisterAfiliate() {
         });
     }
 
-    function handlerSetState(obj){
+    function handlerSetState(obj) {
         setSelectedEstado(obj);
-        handlerSetForm(obj.sigla, 'state_registration');
+        handlerSetForm(obj.UF, 'state_registration');
+        fetchSetCities(obj.id);
+        setCity(null);
     }
 
+    function handlerSetCity(obj) {
+        setCity(obj);
+        handlerSetForm(obj.title, 'municipal_registration');
+    }
+
+
+    async function fetchSetCities(id) {
+        try {
+            const response = await getStateAndCities(id);
+            dispatch(setCities(response.data.state.cities));
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async function handlerSetStates() {
+        if (defaultConsts.states != null) {
+            return;
+        }
+        try {
+            const response = await getStates();
+            dispatch(setStates(response.data.states));
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        handlerSetStates();
+    }, []);
+    
     return (
         <KeyBoardView>
             <View style={{ padding: 20 }}>
@@ -81,8 +116,10 @@ export default function RegisterAfiliate() {
                 <InputCnpj label="CNPJ" onChangeText={(text) => handlerSetForm(text, 'cnpj')} error={validate?.cnpj} />
                 <DefaultInput label="Titulo" onChangeText={(text) => handlerSetForm(text, 'title')} error={validate?.title} />
                 <DefaultInput label="CNAE" onChangeText={(text) => handlerSetForm(text, 'main_CNAE')} error={validate?.main_CNAE} />
-                <InputListRadioOptions  nameKey='estado' valueKey='sigla' value={selectedEstado?.estado} data={estadosComMunicipios} label="Estado" onChangeObject={handlerSetState} error={validate?.state_registration} />
-                <InputListRadioOptions value={selectedMunicipio} label="Municipio" onChangeText={(text) => handlerSetForm(text, 'municipal_registration')} error={validate?.municipal_registration} disabled={true}/>
+                {defaultConsts.states &&
+                    <InputListRadioOptions nameKey='title' valueKey='UF' value={selectedEstado?.title} data={defaultConsts.states} label="Estado" onChangeObject={handlerSetState} error={validate?.state_registration} />
+                }
+                <InputListRadioOptions nameKey='title' valueKey='id' value={city?.title} label="Municipio" data={defaultConsts.cities} onChangeObject={handlerSetCity} error={validate?.municipal_registration} disabled={!selectedEstado} />
                 <InputEmail label="E-mail" onChangeText={(text) => handlerSetForm(text, 'email')} error={validate?.email} />
                 <InputData label="Data de abertura" onChangeText={(text) => handlerSetForm(text, 'cnpj_opening_date')} error={validate?.cnpj_opening_date} />
                 <InputPhone label="Telefone" onChangeText={(text) => handlerSetForm(text, 'phone')} error={validate?.phone} />

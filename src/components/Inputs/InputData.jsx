@@ -2,6 +2,7 @@ import React from "react";
 import { HelperText, TextInput } from "react-native-paper";
 import { formatWithMask } from 'react-native-mask-input';
 import { maskData } from "../../utils/customMasks";
+import { formatDataToBack } from "../../utils/formatValues";
 
 export default function InputData({ mode = 'flat', label = "none", onChangeText, error, initialValue = "" }) {
 
@@ -18,7 +19,7 @@ export default function InputData({ mode = 'flat', label = "none", onChangeText,
         setText(masked);
 
         if (typeof onChangeText === 'function') {
-            onChangeText(unmasked);
+            onChangeText(formatDataToBack(unmasked));
         }
     };
 

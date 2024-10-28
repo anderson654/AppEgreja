@@ -7,6 +7,7 @@ export default function InputListRadioOptions({ data, value, nameKey, valueKey, 
     const [text, setText] = useState("");
     const [modal, setModal] = useState(false);
 
+
     const handlerText = (value) => {
         const itemSelected = getItemSelected(value);
         setText(itemSelected[nameKey]);

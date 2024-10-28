@@ -42,7 +42,7 @@ export default function RadioList({ data, nameKey, valueKey, isVisible = false, 
                         <TouchableOpacity activeOpacity={1} style={{ width: "100%", backgroundColor: "#fff", borderRadius: 20, padding: 20, height: heigthModal }}>
                             <ScrollView>
                                 <View style={{ width: "100%" }}>
-                                    <Radio.Group defaultValue="1" name="exampleGroup" accessibilityLabel="favorite colorscheme" value={value} onChange={handlerSetValue}>
+                                    <Radio.Group defaultValue="1" accessibilityLabel="favorite colorscheme" value={value} onChange={handlerSetValue}>
                                         <ListItens/>
                                     </Radio.Group>
                                 </View>
