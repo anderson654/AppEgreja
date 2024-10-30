@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import { FlatList } from "react-native-gesture-handler";
 import { useTheme } from "react-native-paper";
+import BtnBackCircle from "../../Buttons/BtnBackCircle";
+import { useNavigation } from "@react-navigation/native";
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -10,6 +12,7 @@ const windowWidth = Dimensions.get('window').width;
 export default function SlidImages({ itens = [] }) {
     const theme = useTheme();
     const [activeIndex, setActiveIndex] = useState(0);
+    const navigation = useNavigation();
 
     const ImageItem = ({ data }) => {
         return (
@@ -20,6 +23,12 @@ export default function SlidImages({ itens = [] }) {
     const Indicator = () => {
         return (
             <View style={styles.dotWarp}>
+                <View style={{ flex: 1, padding: 20 }}>
+                    <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
+                        <BtnBackCircle onPress={() => navigation.goBack()} />
+                        <BtnBackCircle onPress={() => navigation.goBack()} icon="share" />
+                    </View>
+                </View>
                 <View style={styles.dotContainer}>
                     {
                         itens.map((_, i) => {
@@ -71,7 +80,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: '100%',
         height: '100%',
-        flexDirection: 'column-reverse',
+        flexDirection: 'column',
         marginTop: 10
     },
     dotContainer: {

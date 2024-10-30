@@ -8,6 +8,7 @@ import HomeOrganization from '../screens/HomeOrganization/HomeOrganization';
 import ProductsAndServices from '../screens/ProductsAndServices/ProductsAndServices';
 import ShowServicesAndProducts from '../screens/ShowServicesAndProducts/ShowServicesAndProducts';
 import Show from '../screens/ProductsAndServices/Show';
+import Avaliables from '../screens/Avaliables/Avaliables';
 
 const Stack = createStackNavigator();
 
@@ -27,6 +28,7 @@ export default function StackHome() {
                 <Stack.Screen name="ProductsAndServices" component={ProductsAndServices} />
                 <Stack.Screen name="ShowServicesAndProducts" component={ShowServicesAndProducts} />
                 <Stack.Screen name="ShowIndividualProduct" component={Show} />
+                <Stack.Screen name="Avaliables" component={Avaliables} />
                 {/* //deve ser criado aqui se vc não quiser o menu embaixo  */}
             </Stack.Navigator>
         </DefaultView>

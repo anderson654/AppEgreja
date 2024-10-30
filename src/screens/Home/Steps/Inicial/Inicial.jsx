@@ -79,9 +79,11 @@ export default function Inicial() {
                 </View>
                 <Space20 />
             </View>
+
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
             <View style={styles.container}>
                 <View style={{ padding: 20, paddingBottom: 0 }}>
-                    <TextPoppins variant={'titleLarge'} fontWeight={700}>Anúncio</TextPoppins>
+                    <TextPoppins variant={'titleLarge'} fontWeight={700}>Destaques</TextPoppins>
                 </View>
                 <SlidPromotions itens={teste} />
                 <View style={styles.contentContainer}>
@@ -106,6 +108,8 @@ export default function Inicial() {
             <View style={{ flex: 1 }}>
                 <ListServicesAndProductsHome />
             </View>
+
+            </ScrollView>
         </>
     );
 }

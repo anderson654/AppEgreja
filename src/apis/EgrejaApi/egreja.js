@@ -105,6 +105,30 @@ export async function createLead(data) {
     return response;
 }
 
+export async function createOrUpdateFeedBack(data) {
+    const response = await axios.post('/empreende/services/feedbacks', data);
+    return response;
+}
+
+export async function getService(serviceId) {
+    const response = await axios.get(`/empreende/services/${serviceId}`);
+    return response;
+}
+
+export async function getSendFeedBacks() {
+    const response = await axios.get(`/empreende/services/feedbacks/send`);
+    return response;
+}
+
+export async function getReceivedFeedBacks() {
+    const response = await axios.get(`/empreende/services/feedbacks/received`);
+    return response;
+}
+
+export async function getNextPage(url) {
+    const response = await axios.get(url);
+    return response;
+}
 
 
 

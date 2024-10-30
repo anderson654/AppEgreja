@@ -77,7 +77,7 @@ export default function MenuProfile() {
                 <LineItemMenu title={'Meus Dados'} subTitle={'Mais informaçoes de conta'} icon="square-edit-outline" />
                 <LineItemMenu title={'Meu Perfil'} subTitle={'Minhas informações do perfil'} icon="account-circle-outline" />
                 <LineItemMenu title={'Meus Anúncios'} subTitle={'Meus anúncios avulsos'} icon="message-text-clock-outline" />
-                <LineItemMenu title={'Central de Atendimento'} subTitle={' '} icon="phone-in-talk-outline" />
+                <LineItemMenu title={'Avaliações'} subTitle={' '} icon="account-star-outline" onPress={() => { closeMenu(), navigation.navigate('Avaliables') }}/>
                 <LineItemMenu title={'Sobre'} subTitle={' '} icon="cog-outline" />
                 <LineItemMenu title={'Termos & Condições'} subTitle={' '} icon="book-alert-outline" />
                 <LineItemMenu title={'Tema'} subTitle={' '} icon="theme-light-dark" />

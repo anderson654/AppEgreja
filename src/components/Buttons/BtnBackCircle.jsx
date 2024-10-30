@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 
 
-export default function ArrowBack({ onPress, icon="keyboard-arrow-left" }) {
+export default function BtnBackCircle({ onPress, icon="keyboard-arrow-left" }) {
 
     const handlerOnPress = () => {
         if (typeof onPress === 'function') {
@@ -22,12 +22,11 @@ export default function ArrowBack({ onPress, icon="keyboard-arrow-left" }) {
 
 const styles = StyleSheet.create({
     container: {
-        height: 40,
-        width: 40,
+        height: 48,
+        width: 48,
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 1,
-        borderRadius: 15,
-        borderColor: "#b9b9b9"
+        borderRadius: 24,
+        backgroundColor:'#fff'
     }
 });

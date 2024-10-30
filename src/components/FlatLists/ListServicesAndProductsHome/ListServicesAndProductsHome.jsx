@@ -17,12 +17,12 @@ export default function ListServicesAndProductsHome() {
 
     return (
         home?.selectedCategory &&
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100, paddingTop: 20 }}>
+        // <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100, paddingTop: 20 }}>
             <View>
                 {home?.selectedCategory.c_service_types.map((obj, index) => {
                     return <ItemServices key={index} data={obj} />
                 })}
             </View>
-        </ScrollView>
+        // </ScrollView>
     );
 }
