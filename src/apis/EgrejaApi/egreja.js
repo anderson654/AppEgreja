@@ -127,6 +127,15 @@ export async function getReceivedFeedBacks() {
 
 export async function getNextPage(url) {
     const response = await axios.get(url);
+}
+
+export async function getStates() {
+    const response = await axios.get('/empreende/states');
+    return response;
+}
+
+export async function getStateAndCities(id) {
+    const response = await axios.get(`/empreende/states/${id}`);
     return response;
 }
 
