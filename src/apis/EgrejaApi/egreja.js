@@ -127,6 +127,7 @@ export async function getReceivedFeedBacks() {
 
 export async function getNextPage(url) {
     const response = await axios.get(url);
+    return response;
 }
 
 export async function getStates() {
