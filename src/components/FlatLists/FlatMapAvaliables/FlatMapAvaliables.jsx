@@ -4,10 +4,6 @@ import { FlatList } from "react-native-gesture-handler";
 
 export default function FlatMapAvaliables({ data = [], onEndReached = () => { } }) {
 
-    console.log(data);
-
-
-
     return (
         <FlatList
             data={data}
