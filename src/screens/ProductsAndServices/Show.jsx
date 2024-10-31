@@ -107,9 +107,6 @@ export default function Show({ route: { params } }) {
     async function handlerGetService() {
         try {
             const response = await getService(id);
-
-            console.log(response);
-
             setService(response.data.service);
             const arrayFeedBacks = response.data.service.service_feedbacks;
             handlerSetFeedBacks(arrayFeedBacks);
