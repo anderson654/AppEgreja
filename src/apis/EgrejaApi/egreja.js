@@ -125,11 +125,6 @@ export async function getReceivedFeedBacks() {
     return response;
 }
 
-export async function getNextPage(url) {
-    const response = await axios.get(url);
-    return response;
-}
-
 export async function getStates() {
     const response = await axios.get('/empreende/states');
     return response;
@@ -137,6 +132,16 @@ export async function getStates() {
 
 export async function getStateAndCities(id) {
     const response = await axios.get(`/empreende/states/${id}`);
+    return response;
+}
+
+export async function getMyOrganization() {
+    const response = await axios.get(`/empreende/organizations`);
+    return response;
+}
+
+export async function getNextPage(url) {
+    const response = await axios.get(url);
     return response;
 }
 

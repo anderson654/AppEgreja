@@ -7,8 +7,6 @@ import { Card, Text } from "react-native-paper";
 export default function MenuSelectService({ onPress }) {
 
     const home = useSelector(state => state.home);
-    console.log(home);
-    
 
     const CardImage = ({ imageUri, data }) => (
         <View>
@@ -40,9 +38,9 @@ const styles = StyleSheet.create({
     imageCard: {
         width: 65,
         height: 65,
+        borderRadius: 12
     },
     containerCard: {
-        overflow: "hidden",
         marginRight: 20
     },
     container: {

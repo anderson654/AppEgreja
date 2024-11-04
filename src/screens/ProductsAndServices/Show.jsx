@@ -16,6 +16,7 @@ import StarsActive from "../../components/Stars/StarsActive";
 import InputComments from "../../components/Inputs/InputComments";
 import { getItemToArrayObject } from "../../utils/arraysManipulate";
 import CardComents from "../../components/Cards/CardComents/CardComents";
+import { newOpenModal } from "../../context/reducers/modals";
 
 
 
@@ -28,6 +29,7 @@ export default function Show({ route: { params } }) {
     const [feedbacks, setFeedBacks] = useState([]);
     const [myFeedBack, setMyFeedBack] = useState(null);
     const [owerService, setOwerService] = useState(null);
+    const [organization, setOrganizaztion] = useState(null);
     const dispatch = useDispatch();
     const { price, title, discount, description, id } = params.product;
     const user = useSelector(state => state.user.user);
@@ -51,24 +53,11 @@ export default function Show({ route: { params } }) {
         },
     ]
 
-
-    async function handlerContact() {
-        setLoading(true);
-        try {
-            const response = await createLead({ service_id: service.id });
-            dispatch(setAlert({
-                type: 'sucess',
-                text: 'Código enviado.'
-            }));
-
-        } catch (error) {
-            dispatch(setAlert({
-                type: 'error',
-                text: error?.response?.data?.message || 'Erro ao registrar usuário.'
-            }));
-        } finally {
-            setLoading(false);
-        }
+    function openModalConfirm() {
+        dispatch(newOpenModal({
+            name: 'MODAL_CONFIRM_CONTACT',
+            data: service
+        }));
     }
 
 
@@ -111,6 +100,7 @@ export default function Show({ route: { params } }) {
             const arrayFeedBacks = response.data.service.service_feedbacks;
             handlerSetFeedBacks(arrayFeedBacks);
             setOwerService(response.data.service.owner_service);
+            setOrganizaztion(response.data.service.owner_service.organization);
         } catch (error) {
             console.log(error);
         }
@@ -148,7 +138,7 @@ export default function Show({ route: { params } }) {
                             <Avatar.Image size={60} source={{ uri: 'https://picsum.photos/700' }} />
                             <View style={{ flex: 1, paddingLeft: 10, justifyContent: 'center' }}>
                                 <TextPoppins variant='bodyMedium' fontWeight={700}>{owerService?.username}</TextPoppins>
-                                <TextPoppins variant='bodyMedium' fontWeight={700} color="#949494">Vendedor</TextPoppins>
+                                <TextPoppins variant='bodyMedium' fontWeight={700} color="#949494">{organization?.fantasy_name}</TextPoppins>
                             </View>
                             <View style={{ flexDirection: "row" }}>
                                 <View style={{ justifyContent: "center" }}>
@@ -164,11 +154,17 @@ export default function Show({ route: { params } }) {
                 </View>
                 <View style={{ flex: 1, padding: 20, paddingTop: 0 }}>
                     <Card style={styles.card} elevation={0}>
+                        <View>
+                            <TextPoppins variant='titleLarge' fontWeight={600}>Preço: {formatToBRL(service.price)}</TextPoppins>
+                            <TextPoppins variant='titleLarge' fontWeight={600}>Desconto: {formatToBRL(service?.discount || 0)}</TextPoppins>
+                        </View>
+                        <Space20 />
                         <TextPoppins variant='titleLarge' fontWeight={600}>Descrição:</TextPoppins>
                         <TextPoppins variant='labelLarge' fontWeight={500}>{service.description}</TextPoppins>
                     </Card>
                 </View>
-                <View style={{ flex: 1, padding: 20, paddingTop: 0 }}>
+
+                {/* <View style={{ flex: 1, padding: 20, paddingTop: 0 }}>
                     <Card style={styles.card} elevation={0}>
                         <TextPoppins variant='titleLarge' fontWeight={600}>Deixe sua avaliação:</TextPoppins>
                         <View style={{ padding: 20, flexDirection: "row", justifyContent: 'center' }}>
@@ -177,10 +173,12 @@ export default function Show({ route: { params } }) {
                         <InputComments onChangeText={setComents} value={coments} />
                         <DefaultButton onPress={fetchFeedback} title="Salvar avaliação" loading={loading} />
                     </Card>
-                </View>
+                </View> */}
+
                 <View style={{ flex: 1, padding: 20, paddingTop: 0 }}>
                     {feedbacks.map(({ id, name, coments, rating }) => (
-                        <CardComents key={id} name={name} coments={coments} rating={rating} />
+                        <CardComents key={id}
+                            title={name} coments={coments} rating={rating} />
                     ))}
                 </View>
                 <Space40 />
@@ -196,7 +194,7 @@ export default function Show({ route: { params } }) {
                             <TextPoppins variant='bodySmall' fontWeight={700} color="#949494">Preço total:</TextPoppins>
                             <TextPoppins variant='headlineSmall' fontWeight={700}>{formatToBRL(service.price)}</TextPoppins>
                         </View>
-                        <DefaultButton onPress={handlerContact} title="Solicitar contato" loading={loading} />
+                        <DefaultButton onPress={openModalConfirm} title="Solicitar contato" loading={loading} />
                     </View>
                 </Card>
             </View>

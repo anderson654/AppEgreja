@@ -8,6 +8,7 @@ import ActionSheetIcon from "../../components/ActionSheets/ActionSheetIcon";
 import MenuProfile from "../../components/Menus/MenuProfile";
 import Inicial from "./Steps/Inicial/Inicial";
 import Promocoes from "./Steps/Promocoes/Promocoes";
+import { View } from "react-native";
 
 
 export default function Home() {
@@ -16,15 +17,17 @@ export default function Home() {
 
     return (
         <>
-            {contextMenuHome.routeSelected === 'Home' &&
-                <Inicial />
-            }
-            {contextMenuHome.routeSelected === 'Promotion' &&
-                <Promocoes />
-            }
+            <View style={{ flex: 1 }}>
+                {contextMenuHome.routeSelected === 'Home' &&
+                    <Inicial />
+                }
+                {contextMenuHome.routeSelected === 'Promotion' &&
+                    <Promocoes />
+                }
+            </View>
             <MenuHome />
             <ActionSheetIcon />
-            <MenuProfile/>
+            <MenuProfile />
         </>
     )
 }

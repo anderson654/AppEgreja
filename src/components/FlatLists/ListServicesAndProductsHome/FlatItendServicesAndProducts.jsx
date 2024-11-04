@@ -89,18 +89,18 @@ export default function FlatItendServicesAndProducts({ data }) {
 
         return (
             <View style={{ padding: 20, width: 300 }}>
-                <Card style={{ position: 'relative', overflow: 'hidden' }} onPress={() => navigation.navigate('ShowIndividualProduct', { product: item })} elevation={0}>
+                <Card style={{ position: 'relative' }} onPress={() => navigation.navigate('ShowIndividualProduct', { product: item })} elevation={0}>
                     <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
                     <View style={{ position: 'absolute', width: '100%', height: '101%', top: 0, left: 0 }}>
                         <View style={{ flex: 1 }}>
                             <View style={{ flexDirection: 'row-reverse' }}>
-                                <View style={{ backgroundColor: "#fff", padding: 10, borderBottomLeftRadius: 20 }}>
+                                <View style={{ backgroundColor: "#fff", padding: 10, borderBottomLeftRadius: 20, borderTopRightRadius: 12 }}>
                                     <TextPoppins fontWeight={600}>{formatToBRL(item?.price || '0')}</TextPoppins>
                                 </View>
                             </View>
 
                         </View>
-                        <View style={{ backgroundColor: "#fff", padding: 10 }}>
+                        <View style={{ backgroundColor: "#fff", padding: 10, borderBottomLeftRadius: 12, borderBottomRightRadius: 12 }}>
                             <TextPoppins fontWeight={600}>{item?.title}</TextPoppins>
                         </View>
                     </View>

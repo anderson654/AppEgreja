@@ -94,14 +94,15 @@ export default function MenuHome() {
 const styles = StyleSheet.create({
     surface: {
         padding: 10,
-        height: 80,
+        height: 100,
         width: '100%',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         backgroundColor: "#fff",
         alignItems: "center",
         flexDirection: "row",
-        marginTop: -20
+        marginTop: -20,
+        paddingBottom: 20
     },
     fab: {
         backgroundColor: "#fff",

@@ -99,9 +99,9 @@ export default function Inicial() {
                         <TextPoppins variant={'titleLarge'} fontWeight={700}>Categoria</TextPoppins>
                     </View>
                     <MenuSelectTypeService onPress={handlerSelectCategories} />
-                    {/* {home?.selectedCategory &&
+                    {home?.selectedCategory &&
                         <MenuSelectService onPress={handlerSetTypeService} />
-                    } */}
+                    }
                     {/* <Space20 /> */}
                 </View>
             </View>

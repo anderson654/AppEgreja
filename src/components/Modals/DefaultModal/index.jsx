@@ -5,7 +5,7 @@ import { setStatusModal } from "../../../context/reducers/modals";
 import CardModal from "./components/CardModal";
 import DefaultView from "../../Views/DefaultView";
 import ModalRegisterNewCompany from "../ModalRegisterNewCompany/ModalRegisterNewCompany";
-import { TouchableOpacity } from "react-native";
+import ModalConfirmSendContact from "../ModalConfirmSendContact/ModalConfirmSendContact";
 
 
 export default function DefaultModal() {
@@ -17,7 +17,8 @@ export default function DefaultModal() {
 
     const OBJECT_MODALS = Object.freeze({
         TEST_MODAL: <CardModal />,
-        MODAL_REGISTER_COMPANY: <ModalRegisterNewCompany />
+        MODAL_REGISTER_COMPANY: <ModalRegisterNewCompany />,
+        MODAL_CONFIRM_CONTACT: <ModalConfirmSendContact />,
     });
 
 
@@ -29,14 +30,17 @@ export default function DefaultModal() {
             visible={reduxModals.statusModal}
             onRequestClose={() => {
                 dispatch(setStatusModal(false));
-            }}>
-            <TouchableWithoutFeedback onPress={() => dispatch(setStatusModal(false))}>
-                <DefaultView spaceTopBar={false} background="rgba(0, 0, 0, 0.5)">
-                    <TouchableWithoutFeedback>
-                        {OBJECT_MODALS[reduxModals.selectedModal] || <></>}
-                    </TouchableWithoutFeedback>
-                </DefaultView>
-            </TouchableWithoutFeedback>
+            }}
+        >
+            <Pressable style={{flex: 1}} onPress={() =>  dispatch(setStatusModal(false))}>
+                <View style={{ flex: 1 }} background="rgba(0, 0, 0, 0.5)">
+                    <Pressable style={{flex: 1}} onPress={() => { }}>
+                        <DefaultView spaceTopBar={true}>
+                            {OBJECT_MODALS[reduxModals.selectedModal] || <></>}
+                        </DefaultView>
+                    </Pressable>
+                </View>
+            </Pressable>
         </Modal>
     );
 }
