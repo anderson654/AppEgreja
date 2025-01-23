@@ -1,11 +1,12 @@
 {
   "expo": {
     "name": "AppEgreja",
-    "slug": "AppEgreja",
+    "slug": "app-egreja",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "newArchEnabled": true,
     "splash": {
       "backgroundColor": "#ffffff"
     },
